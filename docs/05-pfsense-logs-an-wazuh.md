@@ -77,7 +77,7 @@ apt install tcpdump
 tcpdump -i any -n udp port 514
 ```
 
-Ergebnis: Die Pakete von 10.10.10.1 kommen an. Im Dashboard erscheint trotzdem nichts. Also mit `logall` und `wazuh-logtest` eine echte Zeile geprüft:
+Ergebnis: Die Pakete von 10.10.10.1 kommen an. Im Dashboard erscheint trotzdem nichts. Um zu gucken woran das legen kann aktiviere ich wieder `logall` und prüfe mit `wazuh-logtest` eine echte Zeile:
 
 ```bash
 grep filterlog /var/ossec/logs/archives/archives.log | tail -n 1 | sed 's/^[^>]*>[^ ]* //' | /var/ossec/bin/wazuh-logtest
@@ -146,7 +146,7 @@ srcport: '51795'
 | 100101 | 3 | einzelner Block aus den Lab-Netzen (10.10.0.0/16) |
 | 100102 | 10 | Portscan: viele Blocks von derselben IP in kurzer Zeit |
 
-Warum nicht einfach alles hoch bewerten?: Die Firewall blockt ständig etwas, das ist ihr Job. Wenn jedes einzelne Paket ein hoher Alarm wäre, würde man den echten Angriff zwischen tausend Fehlalarmen übersehen (**Alert Fatigue**). Interessant wird es erst, wenn **dieselbe Quelle sehr oft** geblockt wird.
+Warum bewertet man nicht alles mit einem hohen level?: Die Firewall blockt ständig etwas, das ist ihre aufgabe. Wenn jedes einzelne Paket ein hoher Alarm wäre, würde man den echten Angriff zwischen tausend Fehlalarmen übersehen (**Alert Fatigue**). Interessant wird es erst, wenn **dieselbe Quelle sehr oft** geblockt wird.
 
 In `local_rules.xml` nach dem letzten `</group>`:
 
@@ -180,22 +180,22 @@ Vollständig: [local_rules.xml](../wazuh/local_rules.xml)
 **Begründung der Werte**
 
 *Regel 100100*
-- `decoded_as pfsense-custom`: hängt sich direkt an meinen Decoder
+- `decoded_as pfsense-custom`: hängt sich direkt an den Decoder
 - Level 0: nur einsortieren, kein Alert. So machen es auch die Wazuh-eigenen Basisregeln.
 
 *Regel 100101*
-- `if_sid 100100`: wird nur geprüft, wenn die Basisregel gepasst hat
+- `if_sid 100100`: wird nur geprüft, wenn die Basisregel angewendet wurde
 - `<action>block</action>`: `action` ist in Wazuh ein **statisches Feld** und hat ein eigenes Tag. `<field name="action">` führt zum Fehler „action is static“.
-- `srcip 10.10.0.0/16`: alle drei Lab-Netze (10.10.10.x, 10.10.20.x, 10.10.30.x). Das Rauschen aus dem Heimnetz (mDNS, IGMP) wird so ignoriert.
+- `srcip 10.10.0.0/16`: alle drei Lab-Netze (10.10.10.x, 10.10.20.x, 10.10.30.x). Das Rauschen aus dem Heimnetz wird so ignoriert.
 - Level 3: sichtbar, aber ganz unten in der Wichtigkeit. Ein einzelner Block ist noch kein Angriff.
 
 *Regel 100102*
 - `if_matched_sid 100101`: zählt die Treffer von 100101. Nicht 100100, sonst würde auch erlaubter Verkehr mitgezählt.
-- `frequency 16`: Ein einzelner blockierter Verbindungsversuch erzeugt durch TCP-Wiederholungen schon 5 bis 6 Einträge. 16 liegt deutlich darüber, aber weit unter den Hunderten Blocks eines nmap-Scans.
+- `frequency 16`: Ein einzelner blockierter Verbindungsversuch erzeugt durch TCP-Wiederholungen schon 5 bis 6 Einträge. 16 versuche liegen deutlich über den 5 bis 6, aber weit unter den Hunderten Blocks eines nmap-Scans.
 - `timeframe 10`: nmap schafft 16 Blocks in Sekundenbruchteilen, ein verirrtes Programm nicht.
 - `ignore 120`: Nach dem Alarm zwei Minuten Ruhe. Sonst gäbe es bei einem Scan Dutzende Portscan-Alerts.
 - `same_srcip`: Wazuh zählt pro Quell-IP getrennt. Ohne das würden z. B. 8 Blocks von Kali und 8 von Windows zusammen einen falschen Portscan-Alarm ergeben.
-- `$(srcip)` und `$(dstip)` in der Beschreibung: zeigen Angreifer und Ziel. Den Port lasse ich bewusst weg, weil ein Scan viele Ports betrifft und sonst nur der letzte angezeigt würde.
+- `$(srcip)` und `$(dstip)` in der Beschreibung: zeigen Angreifer- und Ziel-IP. Den Port lasse ich bewusst weg, weil ein Scan viele Ports betrifft und sonst nur der letzte angezeigt würde.
 - MITRE **T1046** (Network Service Discovery), Taktik Discovery. Die Regel ist eine Umsetzung der MITRE-Detection-Strategy **DET0376**.
 
 ### Tests mit logtest
@@ -226,7 +226,7 @@ mitre.tactic: '['Discovery']'
 mitre.technique: '['Network Service Discovery']'
 ```
 
-Pro Event erzeugt Wazuh immer nur einen Alert, und zwar von der passenden Regel. Der 16. Block wird also zum Portscan-Alert, danach zählt 100101 normal weiter, aber 100102 bleibt durch `ignore` still.
+Pro Event erzeugt Wazuh immer nur einen Alert, und zwar von der passenden Regel. Die Regel 100101 zählt hoch bis zum 16. Block. Der 16. block löst dann den Portscan-Alert aus, danach zählt 100101 normal weiter, aber 100102 bleibt durch `ignore` erstmal 2 Minuten lang still.
 
 ### Live-Test im Dashboard
 
@@ -243,7 +243,7 @@ Ergebnis: viele Level-3-Alerts (Einzelblocks) und **genau ein** Level-10-Alert p
 
 Gezielte Suche nach dem Portscan: `rule.id:100102`
 
-In den Details steht `previous_output`: Wazuh speichert bei Korrelationsregeln die Events mit, die zum Alarm geführt haben. Man sieht direkt, welche Ports Kali abgeklappert hat.
+In den Details steht `previous_output`: Wazuh speichert bei Korrelationsregeln die Events mit, die zum Alarm geführt haben. Dadurch sieht man direkt, welche Ports Kali abgeklappert hat.
 
 ![Details des Portscan-Alarms 100102](../screenshots/34_20261110170251.png)
 
