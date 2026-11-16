@@ -4,9 +4,7 @@ Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 
 ## Netzwerkarchitektur
 
-<!-- Diagramm einbinden, sobald es in diagrams/ liegt:
 ![Netzwerkarchitektur](../diagrams/netzwerkarchitektur.png)
--->
 
 ### Netze und Interfaces
 
