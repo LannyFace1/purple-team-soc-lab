@@ -1,4 +1,5 @@
 # Purple Team SOC Lab
+Dieses Projekt wurde gemacht um sich im Bereich der Cybersecurity weiter zu bilden und den Umgang mit SIEMs und Firewalls näher zu führen dieses Projekt ist mein erstes dieser Art.
 
 **Wazuh, pfSense und Suricata auf Proxmox, mit eigenen Decodern, eigenen Regeln, Angriffen von Kali und automatischer Reaktion.**
 
