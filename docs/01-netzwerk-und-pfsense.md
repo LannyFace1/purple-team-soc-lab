@@ -2,7 +2,7 @@
 
 Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 
-## Netzwerkarchitektur
+## 1. Netzwerkarchitektur
 
 <!-- Diagramm einbinden, sobald es in diagrams/ liegt:
 ![Netzwerkarchitektur](../diagrams/netzwerkarchitektur.png)
@@ -30,6 +30,8 @@ Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 | Windows 11 (win11-opfer) | Opfer                | DHCP                                                   |
 | Linux (linux-opfer)      | Opfer                | 10.10.20.100                                           |
 | Kali                     | Angreifer            | 10.10.30.100                                           |
+
+## 2. pfSense einrichten 
 
 ## Grundeinrichtung in der pfSense-Konsole direkt nach der Installation
 
@@ -60,11 +62,22 @@ Schritte für das LAN-Interface (Menüpunkt 2):
 > [!NOTE]
 > Das wird für OPT1 (Opfer) und OPT2 (Angreifer) wiederholt, nur mit den jeweiligen IPs aus der Tabelle oben.
 
-In der Weboberfläche müssen wir jetzt noch eine Einstellung vornehmen unter
+| Seite                         | Was du machst                                                                                                                                                              |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Welcome / Netgate Support     | einfach **Next**                                                                                                                                                           |
+| General Information           | Hostname und Domain **nicht leer lassen** (Standardwerte reichen). Bei leeren Feldern stürzt später der DNS Resolver (unbound) ab. DNS-Server optional `1.1.1.1` eintragen |
+| Time Server                   | Timezone auf **Europe/Berlin** stellen                                                                                                                                     |
+| **Configure WAN Interface**   | Typ bleibt **DHCP**. Ganz nach unten scrollen und die Haken bei **„Block RFC1918 Private Networks“** und **„Block bogon networks“** rausnehmen                             |
+| Configure LAN Interface       | steht schon auf `10.10.10.1` / `24`, einfach **Next**                                                                                                                      |
+| **Set Admin WebGUI Password** | Hier unbedingt ein eigenes, sicheres Passwort setzen                                                                                                                       |
+| Reload                        | **Reload** klicken, kurz warten, dann **Finish**                                                                                                                           |
 
-Interface -> WAN nach ganz unten scrollen und da die Einstellungen 
+falls man die Einstellungen  **„Block RFC1918 Private Networks“** und **„Block bogon networks“** noch nicht vorgenommen hat kann man die im nachhinein noch machen unter Interface -> WAN nach ganz unten scrollen und die beiden Häkchen falls vorhanden rausnehmen.
 
 ![Reserved Networks Setting](../screenshots/07_20261108113854.png)
+
+
+
 
 
 ---
