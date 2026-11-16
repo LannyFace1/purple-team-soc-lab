@@ -127,7 +127,7 @@ purple-team-soc-lab/
 ## Was ich gelernt habe
 
 - **Alert Fatigue vermeiden.** Einzelne Firewall-Blocks sind kein Anzeichen eines angriffes. erst ab mehreren nach einander oder gleichzeitig ausgelösten blocks von der selben IP in kurzer zeit kann man sicher sein das es aufmerksamkeit gebracht. 
-- **Eingebaute Regeln Prüfen** Nicht immer ist es nötig eigene regeln zu bauen da die meisten SIE tools schon mit den wichtigsten regeln komen und man muss nur gucken wie man diese verwenden kann.
+- **Eingebaute Regeln Prüfen.** Nicht immer ist es nötig eigene regeln zu bauen da die meisten SIE tools schon mit den wichtigsten regeln komen und man muss nur gucken wie man diese verwenden kann.
 - **Erkennung ist nicht gleich Abwehr.** Nur weil ich ein Event sehe und aufzeichne heizt das nicht das ich aktiv was dagegen tue. Erkennen ist der erste schritt die richtige Abwehr dagegen zu finden und zu implementieren ist der nächste. Zum Beispiel mit Active Response
 
 <!--
