@@ -26,6 +26,9 @@ sysmon -c C:\Sysmon\sysmonconfig.xml
   <log_format>eventchannel</log_format>
 </localfile>
 ```
+
+Vollständig: [agent-windows.xml](../wazuh/ossec-snippets/agent-windows.xml)
+
 danach müssen wir den Agent neu starten damit die neue config geladen wird 
 
 ```powershell
@@ -39,11 +42,11 @@ wenn nach dem neu laden keine Fehler kommen können wir prüfen ob der Wazuh-Age
 Select-String -Path "C:\Program Files (x86)\ossec-agent\ossec.log" -Pattern "Sysmon"
 ```
 
-![Sysmon Log](../screenshots/29_20261110142007.png)
+![Agent liest das Sysmon-Log](../screenshots/29_20261110142007.png)
 
 Jetzt können wir im Wazuh-Dashboard nachschauen und sehen, dass bereits Sysmon-Events verarbeitet und MITRE-Techniken zugeordnet werden.
 
-![Sysmon Log](../screenshots/30_20261110142142.png)
+![Sysmon-Events im Wazuh-Dashboard](../screenshots/30_20261110142142.png)
 
 > [!NOTE]
 > Nicht jedes Sysmon-Event wird zum Alert. Wazuh zeigt nur Events, die eine Regel ab Level 3 auslösen.

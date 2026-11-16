@@ -25,6 +25,8 @@ Im `<ossec_config>` … `</ossec_config>` Block einen zusätzlichen remote-Block
 </remote>
 ```
 
+Vollständig: [manager-remote-syslog.xml](../wazuh/ossec-snippets/manager-remote-syslog.xml)
+
 `allowed-ips` ist die pfSense im Management-Netz. Nur von dort nimmt Wazuh Syslog an.
 
 Dann den Wazuh-Manager neu starten, damit er die geänderte Datei übernimmt:
@@ -46,7 +48,7 @@ sudo systemctl status wazuh-manager
 - **Remote Syslog Contents:** Firewall Events (für Suricata später zusätzlich System Events)
 - **Save**
 
-![WAN_Einstellungen](../screenshots/31_20261110150322.png)
+![Remote Logging an Wazuh](../screenshots/31_20261110150322.png)
 
 ### Logging an der Block-Regel einschalten
 
@@ -62,7 +64,7 @@ Ohne `-Pn` meldet nmap „Host seems down“, weil die Firewall sogar den Ping b
 
 In der pfSense unter **Status → System Logs → Firewall** sieht man jeden geblockten Port-Versuch von 10.10.30.100. Damit nur die Kali-Einträge zu sehen sind, über das Trichter-Symbol oben rechts den **Advanced Log Filter** öffnen, bei **Source IP Address** `10.10.30.100` eintragen und **Apply Filter** klicken.
 
-![WAN_Einstellungen](../screenshots/32_20261116.png)
+![Geblockte Port-Versuche von Kali im Firewall-Log](../screenshots/32_20261116.png)
 
 Alle Versuche laufen über das Interface ANGREIFER und werden von der Regel „Kein Zugriff auf private Netze“ geblockt, auf viele verschiedene Ports (22, 445, 3389, 8080 …).
 
@@ -114,6 +116,8 @@ In `local_decoder.xml` ans Ende einfügen:
   <order>interface,action,direction,protocol,srcip,dstip,srcport,dstport</order>
 </decoder>
 ```
+
+Vollständig: [local_decoder.xml](../wazuh/local_decoder.xml)
 
 - Der erste Decoder erkennt „das ist eine pfSense-Firewallzeile“.
 - Der zweite zerlegt die kommagetrennten Werte (IPv4) und liefert die Felder **interface, action, direction, protocol, srcip, dstip, srcport, dstport**.
@@ -170,6 +174,8 @@ In `local_rules.xml` nach dem letzten `</group>`:
   </rule>
 </group>
 ```
+
+Vollständig: [local_rules.xml](../wazuh/local_rules.xml)
 
 **Begründung der Werte**
 
@@ -233,13 +239,13 @@ nmap -Pn -sS 10.10.10.10
 
 Ergebnis: viele Level-3-Alerts (Einzelblocks) und **genau ein** Level-10-Alert pro Scan, mit MITRE „Network Service Discovery“.
 
-![WAN_Einstellungen](../screenshots/33_20261110170220.png)
+![pfSense-Alarme im Wazuh-Dashboard](../screenshots/33_20261110170220.png)
 
 Gezielte Suche nach dem Portscan: `rule.id:100102`
 
 In den Details steht `previous_output`: Wazuh speichert bei Korrelationsregeln die Events mit, die zum Alarm geführt haben. Man sieht direkt, welche Ports Kali abgeklappert hat.
 
-![WAN_Einstellungen](../screenshots/34_20261110170251.png)
+![Details des Portscan-Alarms 100102](../screenshots/34_20261110170251.png)
 
 Als „Agent“ steht der Wazuh-Server selbst, weil die pfSense-Logs per Syslog direkt beim Server ankommen und nicht über einen Agent.
 

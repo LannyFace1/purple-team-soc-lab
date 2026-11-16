@@ -74,7 +74,7 @@ Schritte für das LAN-Interface (Menüpunkt 2):
 
 falls man die Einstellungen  **„Block RFC1918 Private Networks“** und **„Block bogon networks“** noch nicht vorgenommen hat kann man die im nachhinein noch machen unter **Interface → WAN** nach ganz unten scrollen und die beiden Häkchen falls vorhanden rausnehmen und auf **Save** drücken.
 
-![WAN_Einstellungen](../screenshots/07_20261108113854.png)
+![Reserved Networks unter Interfaces → WAN](../screenshots/07_20261108113854.png)
 
 Warum die WAN-Haken raus müssen: Mein Heimnetz (192.168.X.0/24) ist selbst ein privates Netz. Mit „Block private networks“ blockt die pfSense also jeden Zugriff aus meinem Heimnetz auf ihr eigenes Webinterface.
 
@@ -88,9 +88,9 @@ Um aus meinem Heimnetz mit meinem Computer auf die Weboberfläche zugreifen zu k
    ```
 2. Die IP im Browser aufrufen
 3. Unter **Firewall → Rules → WAN** auf **Add** klicken und eine Regel für 443 aus 192.168.X.0/24 anlegen
-![Firewall_Rule](../screenshots/08_20261108115518.png)
-![Source](../screenshots/09_20261108115532.png)
-![Extra_Options](../screenshots/10_20261108115551.png)
+![WAN-Regel: Aktion, Interface und Protokoll](../screenshots/08_20261108115518.png)
+![WAN-Regel: Quelle Heimnetz](../screenshots/09_20261108115532.png)
+![WAN-Regel: Ziel WAN address, Port 443](../screenshots/10_20261108115551.png)
 
 Nach dem Speichern der Regel lädt die pfSense die Regeln neu, die Firewall ist dann automatisch wieder aktiv.
 
@@ -145,7 +145,7 @@ Nach dem Speichern der Regel lädt die pfSense die Regeln neu, die Firewall ist 
 **Opfer → Wazuh**
 
 ![Opfer → Wazuh](../screenshots/15_20261108122145.png)
-![Opfer → Wazuh](../screenshots/16_20261108122155.png)
+![Opfer → Wazuh: Beschreibung](../screenshots/16_20261108122155.png)
 
 ---
 
@@ -172,7 +172,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | 3   | Block  | Any      | ANGREIFER subnets | PRIVATE_NETS      |          | Kein Zugriff auf private Netze (Logging aktiv) |
 | 4   | Pass   | Any      | ANGREIFER subnets | any               |          | Internet                                       |
 
-![ANGREIFER](../screenshots/19_20261108123527.png)
+![Regeln ANGREIFER](../screenshots/19_20261108123527.png)
 
 ---
 
@@ -186,7 +186,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | 4 | Block | Any | OPFER subnets | PRIVATE_NETS | | Kein Zugriff auf private Netze |
 | 5 | Pass | Any | OPFER subnets | any | | Internet |
 
-![OPFER](../screenshots/20_20261108123721.png)
+![Regeln OPFER](../screenshots/20_20261108123721.png)
 
 ---
 
@@ -199,7 +199,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | 3 | Default allow LAN to any rule |
 | 4 | Default allow LAN IPv6 to any rule |
 
-![MANAGEMENT](../screenshots/21_20261108123732.png)
+![Regeln MANAGEMENT](../screenshots/21_20261108123732.png)
 
 ---
 
@@ -209,7 +209,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | --- | ------------------------------------------------------------- |
 | 1   | Webinterface aus Heimnetz (192.168.X.0/24 → WAN address, 443) |
 
-![WAN](../screenshots/22_20261108123741.png)
+![Regeln WAN](../screenshots/22_20261108123741.png)
 
 ---
 

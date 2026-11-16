@@ -169,6 +169,8 @@ In `local_decoder.xml` unter die pfSense-Decoder:
 </decoder>
 ```
 
+Vollständig: [local_decoder.xml](../wazuh/local_decoder.xml)
+
 - **suricata-custom** erkennt am Vorspann eine Suricata-Meldung der pfSense
 - **suricata-custom-json** greift nur, wenn danach eine `{` kommt, also nur bei der JSON-Form
 - **JSON_Decoder** zerlegt alles ab dem Ende des Vorspanns
@@ -242,6 +244,8 @@ Die Suricata-Regeln stehen in `local_rules.xml` in einem eigenen Block unter dem
 
 </group>
 ```
+
+Vollständig: [local_rules.xml](../wazuh/local_rules.xml)
 
 **Begründung der Werte**
 
