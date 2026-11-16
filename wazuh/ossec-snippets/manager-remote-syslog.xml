@@ -1,10 +1,8 @@
 <!--
-  Purple Team SOC Lab: Syslog-Empfang auf dem Wazuh-Server
   Datei: /var/ossec/etc/ossec.conf (innerhalb von <ossec_config>)
   Danach: systemctl restart wazuh-manager
 
-  Dieser Block kommt zusätzlich dazu. Der vorhandene <remote>-Block für die Agents
-  (connection secure, Port 1514/tcp) bleibt unverändert stehen.
+  Dieser Block kommt zusätzlich in die datei. Alle restlichen blöcke werden nicht verändert.
 -->
 
 <!-- pfSense schickt Firewall- und Suricata-Meldungen per Syslog. Angenommen wird nur von der pfSense (10.10.10.1) -->
