@@ -8,7 +8,7 @@ Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 ![Netzwerkarchitektur](../diagrams/netzwerkarchitektur.png)
 -->
 
-## Netze und Interfaces
+### Netze und Interfaces
 
 | Interface | Netz       | pfSense-IP      | DHCP-Bereich für die VMs |
 | --------- | ---------- | --------------- | ------------------------ |
@@ -21,7 +21,7 @@ Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 > Die drei Lab-Netze sind in Proxmox eigene Bridges ohne Bridge-Port (vmbr1, vmbr2, vmbr3).
 > Sie haben also keine Verbindung nach außen, der ganze Verkehr läuft über die pfSense.
 
-## VMs im Netzwerk
+### VMs im Netzwerk
 
 | VM                       | Netz                 | IP                                                     |
 | ------------------------ | -------------------- | ------------------------------------------------------ |
@@ -33,7 +33,7 @@ Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 
 ## 2. pfSense einrichten 
 
-## Grundeinrichtung in der pfSense-Konsole direkt nach der Installation
+### Grundeinrichtung in der pfSense-Konsole direkt nach der Installation
 
 | Einstellung          | Wert                                                     |
 | -------------------- | -------------------------------------------------------- |
@@ -76,9 +76,9 @@ falls man die Einstellungen  **„Block RFC1918 Private Networks“** und **„B
 
 ![Reserved Networks Setting](../screenshots/07_20261108113854.png)
 
+Warum die WAN-Haken raus müssen: Mein Heimnetz (192.168.X.0/24) ist selbst ein privates Netz. Mit „Block private networks“ blockt die pfSense also jeden Zugriff aus meinem Heimnetz auf ihr eigenes Webinterface.
 
-
-
+### Zugriff aus dem Heimnetz aufs Webinterface
 
 ---
 
