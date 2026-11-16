@@ -22,7 +22,7 @@ Wichtig: **Destination** ist, wohin das Paket ursprünglich geht (die pfSense se
 
 dann sollte man in der liste die einstellung sehen 
 
-![Wazuh SSH](../screenshots/24_20261110152028.png)
+![Wazuh SSH](../screenshots/23_20261110152028.png)
 
 Dann kann man sich mit dem bevorzugten SSH Tool Verbinden das Beispiel zeigt es über PowerShell:
 ```powershell
@@ -43,7 +43,6 @@ Dann durchlaufen lassen.
 Damit ich Wazuh auch über meinen Computer im Heimnetz erreichen kann, muss ich in pfSense eine Port-Weiterleitung hinzufügen wie vorher fürs SSH.
 Das heist wir machen die gleichen schritte wie bei [Wazuh-VM über SSH erreichbar machen vom Heimnetz](###-Wazuh-VM-über-SSH-erreichbar-machen-vom-Heimnetz)
 
-![Wazuh SSH](../screenshots/25_20261108142659.png)
 
 
 ---
