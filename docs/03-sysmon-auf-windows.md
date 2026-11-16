@@ -2,8 +2,13 @@
 
 Sysmon mit SwiftOnSecurity-Config installieren und an Wazuh anbinden.
 
-> [!NOTE]
-> Inhalt folgt.
+### Warum installiere ich Sysmon? 
+
+Die normalen Windows-Logs geben sehr wenig Informationen aus dem Grund benutze ich Sysmon. Sysmon protokolliert deutlich genauer, welcher Prozess wann was gestartet hat, welche Netzwerkverbindungen aufgebaut und welche Dateien angelegt oder gelöscht wurden. Die Config von SwiftOnSecurity filtert dabei das Rauschen heraus.
+
+
+
+ 
 
 ---
 
