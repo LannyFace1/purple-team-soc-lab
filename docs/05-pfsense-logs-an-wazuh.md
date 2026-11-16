@@ -46,7 +46,7 @@ sudo systemctl status wazuh-manager
 - **Remote Syslog Contents:** Firewall Events (für Suricata später zusätzlich System Events)
 - **Save**
 
-
+![WAN_Einstellungen](../screenshots/30_20261110142142.png)
 
 
 
