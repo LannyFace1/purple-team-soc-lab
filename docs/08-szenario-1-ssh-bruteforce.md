@@ -1,7 +1,5 @@
 # 08 Szenario 1: SSH-Bruteforce
 
-Angriff mit hydra, Erkennung in Wazuh und automatische Sperre der Angreifer-IP.
-
 ### Ziel:
 Ein Angreifer (Kali) versucht, sich per SSH-Bruteforce Zugang zur Linux-Opfer-VM zu verschaffen. Ich zeige, wie der Angriff abläuft, wie Wazuh und Suricata ihn erkennen, wie OpenSSH sich selbst wehrt und wie Wazuh den Angreifer am Ende per Active Response automatisch sperrt.
 
@@ -24,7 +22,7 @@ sudo useradd -m -s /bin/bash sharon
 - `-m` legt das Home-Verzeichnis an
 - `-s /bin/bash` setzt die Login-Shell
 
-Dann ein Passwort setzen. Für das Lab wähle ich bewusst ein Passwort, das in der bekannten Wordlist rockyou.txt steht, damit der Angriff garantiert einen Treffer bekommt. Ich nehme extra eins, das nicht ganz vorne in der Liste steht, damit der Lauf nicht schon beim ersten Versuch trifft:
+Dann ein Passwort setzen:
 
 ```bash
 sudo passwd sharon
@@ -40,7 +38,7 @@ Ich zeige zwei Varianten.
 
 **Fall 1: Benutzername und Passwort unbekannt**
 
-Hier kenne ich weder den Benutzernamen noch das Passwort und probiere beide über Wordlists durch. Dafür habe ich mir eine eigene `users.txt` und `pass.txt` fürs Lab angelegt.
+Hier kenne ich weder den Benutzernamen noch das Passwort und probiere beide über Wordlists durch. Dafür habe ich mir eine eigene `users.txt` und `pass.txt` fürs Lab angelegt. Einfach aus dem Grund das Bruteforce Attacks sehr viel zeit brauchen und ich den Ablauf im Projekt beschleunigen wollte, verwende ich eigene wordlists, in denen die Usernamen und Passwörter inklusive der Dummys stehen.
 
 ```bash
 hydra -L users.txt -P pass.txt ssh://10.10.20.100 -t 4 -f -V
@@ -77,13 +75,13 @@ hydra -l sharon -P pass.txt ssh://10.10.20.100 -t 4 -f -V
 
 Hier wird das Passwort `chocolate` gefunden, der Angriff ist erfolgreich.
 
-Auffällig: In diesem Fall tauchen meine Suricata-Regeln 100201/100203 **nicht** auf. Das liegt **nicht** an der 16er-Schwelle, denn die gehört zur pfSense-Portscan-Regel 100102 und hat mit den Suricata-Regeln nichts zu tun (100201 feuert bei jedem einzelnen Alert, ganz ohne Schwellwert). Der Grund ist ein anderer: In Fall 1 liefen fast 300 Versuche über viele Verbindungen, dadurch griff die Suricata-Signatur „SSH invalid banner“. In Fall 2 sind es nur 14 Versuche gegen einen User, also deutlich weniger und ruhigerer Verkehr, und die Signatur hat nicht angeschlagen. Die Host-Regel 2502 erkennt den Angriff aber weiterhin zuverlässig.
+Auffällig ist: In diesem Fall tauchen meine Suricata-Regeln 100201/100203 **nicht** auf. Das liegt **nicht** an der 16er-Schwelle, denn die gehört zur pfSense-Portscan-Regel 100102 und hat mit den Suricata-Regeln nichts zu tun (100201 feuert bei jedem einzelnen Alert, ganz ohne Schwellwert). Der Grund ist ein anderer: In Fall 1 liefen fast 300 Versuche über viele Verbindungen, dadurch griff die Suricata-Signatur „SSH invalid banner“. In Fall 2 sind es nur 14 Versuche gegen einen User, also deutlich weniger und ruhigerer Verkehr, und die Signatur hat nicht angeschlagen. Die Host-Regel 2502 erkennt den Angriff aber weiterhin zuverlässig.
 
 ### OpenSSH wehrt sich selbst (PerSourcePenalties)
 
-Der Abbruch von Hydra in Fall 1 kam **nicht** von einer meiner Regeln, sondern von OpenSSH selbst. Suricata läuft bei mir im IDS-Modus (nur erkennen, nicht blocken), und eine Active Response für SSH hatte ich zu diesem Zeitpunkt noch nicht. **Erkennung ist nicht gleich Abwehr.**
+Der Abbruch von Hydra in Fall 1 kam **nicht** von einer meiner Regeln, sondern von OpenSSH selbst. Suricata läuft bei mir im IDS-Modus (nur erkennen, nicht blocken), und eine Active Response für SSH hatte ich zu diesem Zeitpunkt noch nicht.
 
-OpenSSH 10 bringt aber eine eingebaute Bremse mit. Prüfen auf linux-opfer:
+OpenSSH 10 bringt aber eine eingebaute Bremse mit. Das können wir prüfen auf linux-opfer mit:
 
 ```bash
 ssh -V
@@ -114,10 +112,10 @@ Entscheidend ist `persourcepenalties`:
 - `min:15` → ab 15 Sekunden aufgelaufener Strafe (also nach rund 3 Fehlversuchen) weist sshd neue Verbindungen dieser IP aktiv ab
 - `max:600` → die Strafe wächst bei weiteren Fehlschlägen bis maximal 10 Minuten
 
-Genau das hat Hydra in Fall 1 ausgebremst: Nach wenigen Fehlversuchen überschritt Kalis Strafzeit die 15-Sekunden-Schwelle, sshd hat neue Verbindungen abgewiesen, und Hydra meldete „too many connection errors“.
+Genau das hat Hydra in Fall 1 abbrechen lassen: Nach wenigen Fehlversuchen überschritt Kalis Strafzeit die 15-Sekunden-Schwelle, sshd hat neue Verbindungen abgewiesen, und Hydra meldete „too many connection errors“.
 
 > [!IMPORTANT]
-> Das ist ein **temporäres** Abweisen (max. 10 Minuten), kein dauerhafter Bann und kein Firewall-Block, und es alarmiert niemanden. Ein geduldiger Angreifer, der langsam probiert, bleibt unter der Strafschwelle und läuft daran vorbei. Deshalb braucht es für eine dauerhafte, protokollierte Sperre zusätzlich fail2ban oder eine eigene Active Response. Das erklärt auch, warum Fall 2 durchkam: nur 14 langsame Versuche gegen einen User, mit `-f` beim Treffer beendet.
+> Das ist ein **temporäres** Abweisen (max. 10 Minuten), kein dauerhafter Bann und kein Firewall-Block, und es alarmiert niemanden. Ein geduldiger Angreifer der langsam probiert bleibt unter der Strafschwelle und läuft daran vorbei. Deshalb braucht es für eine dauerhafte protokollierte Sperre zusätzlich fail2ban oder eine eigene Active Response. Das erklärt auch, warum Fall 2 durchkam: nur 14 langsame Versuche gegen einen User, mit `-f` beim Treffer beendet.
 
 ### Auswertung in Wazuh (Regel 2502)
 
@@ -138,7 +136,7 @@ Die wichtigsten Felder für mich als Verteidiger (Blue Team):
 | `rule.id`       | 2502                        | welche Regel gegriffen hat                              |
 | `rule.mitre.id` | T1110                       | MITRE-ATT&CK-ID (Brute Force, Taktik Credential Access) |
 
-Genau diese Punkte brauche ich, um Gegenmaßnahmen einzuleiten: Wer greift an (srcip), wen (dstuser), auf welcher Maschine (agent), wann (timestamp) und mit welcher Technik (MITRE T1110).
+Genau diese Punkte brauche ich um Gegenmaßnahmen einzuleiten: Wer greift an (srcip), wen (dstuser), auf welcher Maschine (agent), wann (timestamp) und mit welcher Technik (MITRE T1110).
 
 ### Automatische Reaktion (firewall-drop)
 
@@ -151,7 +149,7 @@ Zuerst hatte ich eine eigene Frequenz-Regel 100400 mit `if_matched_group authent
 - **5760** „sshd: authentication failed.“ (Level 5) pro einzelnem Fehlversuch
 - **5763** „sshd: brute force trying to get access to the system.“ (**Level 10**), Wazuhs eingebaute Regel, die die Fehlversuche selbst aggregiert und die `srcip` mitbringt
 
-5763 übernimmt die Zählung also schon zuverlässig. Statt selbst zu zählen, hänge ich meine Regel einfach daran. Das ist robuster und eine gute Lehre: erst die eingebauten Regeln prüfen, bevor man eigene Korrelation baut.
+5763 übernimmt die Zählung also schon zuverlässig. Statt selbst zu zählen, hänge ich meine Regel einfach daran.
 
 **Regel 100400 (finale Version)**
 
@@ -194,7 +192,7 @@ Vollständig: [manager-active-response.xml](../wazuh/ossec-snippets/manager-acti
 
 - `location defined-agent` + `agent_id 001`: läuft auf linux-opfer (wo gesperrt werden soll)
 - `rules_id 100400`: löst bei meiner Regel aus
-- `timeout 300`: Sperre für 5 Minuten, danach entfernt firewall-drop sie automatisch wieder
+- `timeout 300`: Sperre für 5 Minuten, danach entfernt firewall-drop sie automatisch wieder. 
 
 **Test**
 
@@ -202,14 +200,14 @@ Vorher: Die Firewall von linux-opfer ist leer, die Kali-IP ist nicht gesperrt.
 
 ![iptables vorher: leere Chains](../screenshots/62_20261113164558.png)
 
-Damit der Angriff lange genug läuft, um live gesperrt zu werden (chocolate steht in rockyou zu weit vorne, sonst ist der Lauf durch, bevor die Reaktion greift), nehme ich eine Wordlist **ohne** das echte Passwort:
+Damit der Angriff lange genug läuft, um live gesperrt zu werden, nehme ich eine Wordlist **ohne** das echte Passwort dabei bediene ich mich an einer bekannten Wordlist der rockyou.txt:
 
 ```bash
 grep -vx chocolate /usr/share/wordlists/rockyou.txt | head -300 > ~/wrong.txt
 hydra -l sharon -P ~/wrong.txt ssh://10.10.20.100 -t 4 -V
 ```
 
-Ergebnis, an vier Stellen belegt:
+Ergebnis:
 
 1. Im `active-responses.log` feuert Regel 100400, und firewall-drop führt die Reaktion aus (`check_keys` → `continue` → `Ended`) mit der IP 10.10.30.100.
 2. Nachher: Auf linux-opfer steht die Sperre in iptables, in der **INPUT-** und der **FORWARD-**Chain:
@@ -227,7 +225,7 @@ Ergebnis, an vier Stellen belegt:
 Szenario 1 zeigt den kompletten Bogen von der Erkennung bis zur Reaktion:
 
 1. **Angriff**: SSH-Bruteforce von Kali
-2. **Erkennung**: 5760 pro Fehlversuch → Wazuhs 5763 aggregiert → eigene Regel 100400 (Level 10, mit Angreifer-IP)
+2. **Erkennung**: 5760 pro Fehlversuch → Wazuhs Regel 5763 → eigene Regel 100400 (Level 10, mit Angreifer-IP)
 3. **Drosselung** durch OpenSSH selbst (PerSourcePenalties), unabhängig vom SIEM
 4. **Reaktion**: firewall-drop sperrt die Angreifer-IP automatisch per iptables
 5. **Selbstheilung**: nach 300 Sekunden fällt die Sperre von selbst wieder weg
