@@ -59,7 +59,7 @@ Das heist wir machen die gleichen schritte wie bei [Wazuh-VM über SSH erreichba
 
 Das Gleiche wird dann nochmal für den Windows Agent gemacht.
 
-Danach sieht man sie als aktiv im Dashboard:
+Danach sieht man beide Agent als aktiv im Dashboard:
 ![Wazuh SSH](../screenshots/28_20261108142749.png)
 
 
