@@ -98,7 +98,7 @@ Die Zeile wird gar nicht vorab dekodiert (kein Zeitstempel, kein Hostname erkann
 
 ### Eigener Decoder
 
-> [!info] Hinweis
+> [!NOTE]
 > Diesen Decoder habe ich mit KI-Unterstützung erstellt. Getestet habe ich ihn selbst mit `wazuh-logtest` und live im Dashboard.
 
 In `local_decoder.xml` ans Ende einfügen:

@@ -150,7 +150,7 @@ Mit der JSON-Form arbeite ich weiter, weil dort jeder Wert einen Namen hat.
 ### Eigener Decoder
 
 
-> [!info] Hinweis
+> [!NOTE]
 > Diesen Decoder habe ich mit KI-Unterstützung erstellt. Getestet habe ich ihn selbst mit `wazuh-logtest` und live im Dashboard.
 
 Wazuh hat einen eingebauten **JSON_Decoder**, der automatisch aus jedem Schlüssel im JSON ein Feld macht. Ich muss ihm nur sagen, wo das JSON anfängt, nämlich nach dem Syslog-Vorspann.
