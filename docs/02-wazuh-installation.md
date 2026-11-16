@@ -22,7 +22,7 @@ Wichtig: **Destination** ist, wohin das Paket ursprünglich geht (die pfSense se
 
 dann sollte man in der liste die einstellung sehen 
 
-![Wazuh SSH](../screenshots/23_20261110152028.png)
+![Wazuh SSH](../screenshots/23_20261108131136.png)
 
 Dann kann man sich mit dem bevorzugten SSH Tool Verbinden das Beispiel zeigt es über PowerShell:
 ```powershell
