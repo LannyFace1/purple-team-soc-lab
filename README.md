@@ -1,13 +1,13 @@
 # Purple Team SOC Lab
 
-**Wazuh, pfSense und Suricata auf Proxmox, mit eigenen Decodern, eigenen Regeln, Angriffen von Kali und automatischer Reaktion.**
+**Wazuh, pfSense und Suricata auf Proxmox, mit Decodern, eigenen Regeln, Angriffen von Kali und automatischer Reaktion.**
 
 Ein selbst gebautes Security Operations Center im Homelab. Ich greife meine eigenen Opfer-VMs von einem Kali-Rechner aus an, erkenne die Angriffe im SIEM und lasse Wazuh automatisch reagieren.
 
-**Warum ich das gebaut habe:** Das ist mein erstes Projekt dieser Art. Ich wollte mich mit SIEMs, Firewalls und IDS vertraut machen und den kompletten Weg einmal selbst gehen, vom Netzwerkdesign über das Einsammeln der Logs bis zur fertigen Erkennungsregel mit Gegenmaßnahme. Vieles davon habe ich mir während des Projekts erst beigebracht, und die Probleme, auf die ich dabei gestoßen bin, habe ich mit dokumentiert.
+**Warum ich das Project gemacht habe:** Das ist mein erstes Projekt dieser Art. Das Ziel des Projektes war es mich mit SIEMs, Firewalls und IDS vertraut zu machen und im praktischen rahmen den kompletten Weg selbst zu gehen, vom Netzwerkdesign über das Sammeln von logs bis zur Erstellung von Regeln und Gegenmaßnahmen. Vieles davon habe ich mir während des Projektes selber beigebracht. Fehler die mir unterlaufen sind habe ich mit dokumentiert.  
 
 > [!NOTE]
-> Die ausführliche Schritt-für-Schritt-Anleitung liegt im Ordner [`docs/`](docs/README.md).
+> Die ausführliche Anleitung liegt im Ordner [`docs/`](docs/README.md).
 
 ---
 
@@ -32,7 +32,7 @@ Ein selbst gebautes Security Operations Center im Homelab. Ich greife meine eige
    └──────────┘    └──────────────┘
 ```
 
-Die drei Lab-Netze sind in Proxmox eigene Bridges ohne Verbindung nach außen. Der gesamte Verkehr läuft über die pfSense.
+Die drei Lab-Netze sind in Proxmox Bridges ohne Verbindung nach außen unterteilt. Der gesamte Verkehr läuft über die pfSense.
 
 | Von → Nach | Erlaubt | Grund |
 |---|---|---|
@@ -72,7 +72,7 @@ Die drei Lab-Netze sind in Proxmox eigene Bridges ohne Verbindung nach außen. D
 
 ---
 
-## Eigene Decoder und Regeln
+## Decoder und Regeln
 
 | ID / Name | Zweck |
 |---|---|
@@ -126,14 +126,14 @@ purple-team-soc-lab/
 
 ## Was ich gelernt habe
 
-<!-- Entwurf, bitte in eigenen Worten anpassen -->
+- **Alert Fatigue vermeiden.** Einzelne Firewall-Blocks sind kein Anzeichen eines angriffes. erst ab mehreren nach einander oder gleichzeitig ausgelösten blocks von der selben IP in kurzer zeit kann man sicher sein das es aufmerksamkeit gebracht. 
+- **Eingebaute Regeln Prüfen** Nicht immer ist es nötig eigene regeln zu bauen da die meisten SIE tools schon mit den wichtigsten regeln komen und man muss nur gucken wie man diese verwenden kann.
+- **Erkennung ist nicht gleich Abwehr.** Nur weil ich ein Event sehe und aufzeichne heizt das nicht das ich aktiv was dagegen tue. Erkennen ist der erste schritt die richtige Abwehr dagegen zu finden und zu implementieren ist der nächste. Zum Beispiel mit Active Response
 
+<!--
 - **Logs ankommen heißt nicht, dass sie erkannt werden.** Die pfSense-Logs kamen laut `tcpdump` an, trotzdem gab es keinen einzigen Alarm. Mit `wazuh-logtest` habe ich gefunden, dass keiner der mitgelieferten Decoder zum Format passt, und einen eigenen geschrieben.
-- **Alert Fatigue vermeiden.** Ein einzelner Firewall-Block ist kein Angriff. Erst viele Blocks von derselben IP in kurzer Zeit werden zum Portscan-Alarm, und danach ist zwei Minuten Ruhe.
-- **Erst die eingebauten Regeln prüfen.** Meine eigene Bruteforce-Korrelation hat nicht ausgelöst. Ein Blick ins `alerts.log` hat gezeigt, dass Wazuhs Regel 5763 die Zählung schon übernimmt. Darauf aufzubauen war robuster.
-- **Erkennung ist nicht gleich Abwehr.** Suricata im IDS-Modus meldet nur. Gesperrt wird erst durch Active Response, und auch die Sperre ist bewusst nur temporär.
 - **Kontext ist wichtig.** Suricata hat das Angreifer-Netz zuerst als eigenes Netz betrachtet, deshalb haben viele Regeln nicht gegriffen. Erst mit sauber gesetztem HOME_NET kamen die Alarme.
-
+-->
 ---
 
 ## Ausblick
