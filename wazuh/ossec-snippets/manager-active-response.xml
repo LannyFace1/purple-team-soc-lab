@@ -1,1 +1,29 @@
+  <command>
+    <name>remove-threat</name>
+    <executable>remove-threat.sh</executable>
+    <timeout_allowed>no</timeout_allowed>
+  </command>
 
+  
+  <active-response>
+    <disabled>no</disabled>
+    <command>remove-threat</command>
+    <location>defined-agent</location>
+    <agent_id>001</agent_id>
+    <rules_id>87105</rules_id>
+  </active-response>
+
+  <active-response>
+    <disabled>no</disabled>
+    <command>firewall-drop</command>
+    <location>defined-agent</location>
+    <agent_id>001</agent_id>
+    <rules_id>100400</rules_id>
+    <timeout>300</timeout>
+  </active-response>
+  
+
+  <!-- Log analysis -->
+  <localfile>
+  <log_format>command</log_format>
+  <command>df -P</command>
