@@ -1,6 +1,6 @@
 # Dokumentation
 
-Die ausführliche Schritt-für-Schritt-Anleitung zum Purple Team SOC Lab, in der Reihenfolge, in der ich das Lab aufgebaut habe.
+Die ausführliche Anleitung zum Purple Team SOC Lab, in der Reihenfolge, in der ich das Lab aufgebaut habe und Tests durchgeführt habe.
 
 | Nr. | Abschnitt | Inhalt |
 |---|---|---|
