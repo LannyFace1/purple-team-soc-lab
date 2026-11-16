@@ -74,7 +74,7 @@ Schritte für das LAN-Interface (Menüpunkt 2):
 
 falls man die Einstellungen  **„Block RFC1918 Private Networks“** und **„Block bogon networks“** noch nicht vorgenommen hat kann man die im nachhinein noch machen unter **Interface → WAN** nach ganz unten scrollen und die beiden Häkchen falls vorhanden rausnehmen und auf **Save** drücken.
 
-![Reserved Networks Setting](../screenshots/07_20261108113854.png)
+![WAN_Einstellungen](../screenshots/07_20261108113854.png)
 
 Warum die WAN-Haken raus müssen: Mein Heimnetz (192.168.X.0/24) ist selbst ein privates Netz. Mit „Block private networks“ blockt die pfSense also jeden Zugriff aus meinem Heimnetz auf ihr eigenes Webinterface.
 
@@ -88,9 +88,9 @@ Um aus meinem Heimnetz mit meinem Computer auf die Weboberfläche zugreifen zu k
    ```
 2. Die IP im Browser aufrufen
 3. Unter **Firewall → Rules → WAN** auf **Add** klicken und eine Regel für 443 aus 192.168.X.0/24 anlegen
-![Reserved Networks Setting](../screenshots/08_20261108113854.png)
-![Reserved Networks Setting](../screenshots/09_20261108113854.png)
-![Reserved Networks Setting](../screenshots/10_20261108113854.png)
+![Firewall_Rule](../screenshots/08_20261108115518.png)
+![Source](../screenshots/09_20261108115532.png)
+![Extra_Options](../screenshots/10_20261108115551.png)
 
 Nach dem Speichern der Regel lädt die pfSense die Regeln neu, die Firewall ist dann automatisch wieder aktiv.
 
@@ -124,24 +124,24 @@ Nach dem Speichern der Regel lädt die pfSense die Regeln neu, die Firewall ist 
 
 ### Firewall-Regeln erstellen
 **Angreifer → Opfer**
-![Reserved Networks Setting](../screenshots/11_20261108113854.png)
+![Angreifer → Opfer](../screenshots/11_20261108120523.png)
 
 **Opfer → Angreifer**
-![Reserved Networks Setting](../screenshots/12_20261108113854.png)
+![Opfer → Angreifer](../screenshots/12_20261108120837.png)
 
 **Angreifer → Management**
-![Reserved Networks Setting](../screenshots/13_20261108113854.png)
-![Reserved Networks Setting](../screenshots/14_20261108113854.png)
+![Angreifer → Management](../screenshots/13_20261108121442.png)
+![Angreifer → Management](../screenshots/14_20261108121159.png)
 
 **Opfer → Wazuh**
-![Reserved Networks Setting](../screenshots/15_20261108113854.png)
-![Reserved Networks Setting](../screenshots/16_20261108113854.png)
+![Opfer → Wazuh](../screenshots/15_20261108122145.png)
+![Opfer → Wazuh](../screenshots/16_20261108122155.png)
 
 **Opfer → Heimnetz**
-![Reserved Networks Setting](../screenshots/17_20261108113854.png)
+![Opfer → Heimnetz](../screenshots/17_20261108122530.png)
 
 **Management → Heimnetz**
-![Reserved Networks Setting](../screenshots/18_20261108113854.png)
+![Management → Heimnetz](../screenshots/18_20261108122732.png)
 
 ### Alle Regeln pro Netz (in genau dieser Reihenfolge)
 
@@ -156,7 +156,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | 3   | Block  | Any      | ANGREIFER subnets | PRIVATE_NETS      |          | Kein Zugriff auf private Netze (Logging aktiv) |
 | 4   | Pass   | Any      | ANGREIFER subnets | any               |          | Internet                                       |
 
-![Reserved Networks Setting](../screenshots/19_20261108113854.png)
+![ANGREIFER](../screenshots/19_20261108123527.png)
 
 **OPFER**
 
@@ -168,7 +168,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | 4 | Block | Any | OPFER subnets | PRIVATE_NETS | | Kein Zugriff auf private Netze |
 | 5 | Pass | Any | OPFER subnets | any | | Internet |
 
-![Reserved Networks Setting](../screenshots/20_20261108113854.png)
+![OPFER](../screenshots/20_20261108123721.png)
 
 **MANAGEMENT**
 
@@ -179,7 +179,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | 3 | Default allow LAN to any rule |
 | 4 | Default allow LAN IPv6 to any rule |
 
-![Reserved Networks Setting](../screenshots/21_20261108113854.png)
+![MANAGEMENT](../screenshots/21_20261108113854.png)
 
 **WAN**
 
@@ -187,7 +187,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | --- | ------------------------------------------------------------- |
 | 1   | Webinterface aus Heimnetz (192.168.X.0/24 → WAN address, 443) |
 
-![Reserved Networks Setting](../screenshots/22_20261108113854.png)
+![WAN](../screenshots/22_20261108113854.png)
 
 ---
 
