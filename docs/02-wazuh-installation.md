@@ -33,7 +33,8 @@ ssh debian@192.168.X.54 -p 2222
 curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh && bash ./wazuh-install.sh -a -i
 ```
 
--a steht für All-in-One: Manager, Indexer und Dashboard auf einer VM /n
+-a steht für All-in-One: Manager, Indexer und Dashboard auf einer VM 
+
 -i heißt Betriebssystem-Prüfung ignorieren, weil Debian 13 offiziell noch nicht unterstützt wird
 
 Dann durchlaufen lassen.
