@@ -4,10 +4,11 @@
         <protocol>udp</protocol>
         <allowed-ips>10.10.10.1</allowed-ips>
         <local_ip>10.10.10.10</local_ip>
-  </remote>
-  <remote>
+</remote>
+
+<remote>
     <connection>secure</connection>
     <port>1514</port>
     <protocol>tcp</protocol>
     <queue_size>131072</queue_size>
-  </remote>
+</remote>
