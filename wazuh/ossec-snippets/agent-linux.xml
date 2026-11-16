@@ -1,5 +1,4 @@
 <!--
-  Purple Team SOC Lab: Ergänzung in der ossec.conf des Linux-Agents (linux-opfer)
   Datei: /var/ossec/etc/ossec.conf
   Danach: sudo systemctl restart wazuh-agent
 -->
