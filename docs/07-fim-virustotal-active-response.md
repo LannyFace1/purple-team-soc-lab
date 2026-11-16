@@ -3,12 +3,12 @@
 Neue Dateien prüfen lassen und Schadsoftware automatisch entfernen.
 
 ### Ziel:
-Wenn auf einem Opfer eine schädliche Datei auftaucht, soll Wazuh das erkennen, die Datei bei VirusTotal prüfen lassen und sie automatisch löschen. Auf Windows übernimmt das Löschen der Microsoft Defender, Wazuh soll aber sehen, was der Defender getan hat.
+Wenn auf einer Opfer-VM eine schädliche Datei auftaucht, soll Wazuh das erkennen, die Datei bei VirusTotal prüfen lassen und sie automatisch löschen sobald die Datei als gefährlich geflagged wird. Auf Windows übernimmt das Löschen der Microsoft eigene Microsoft Defender. Wazuh soll aber sehen, was der Defender getan hat und es im Dashboard anzeigen können.
 
 ### Wie das zusammenhängt
 
-1. Der Agent auf einem Opfer überwacht bestimmte Ordner (**File Integrity Monitoring**, FIM, intern `syscheck`).
-2. Taucht dort eine neue Datei auf oder ändert sich eine, meldet der Agent das an den Wazuh-Server.
+1. Der Agent auf einer Opfer-VM überwacht bestimmte Ordner (**File Integrity Monitoring**, FIM, intern `syscheck`).
+2. Taucht dort eine neue Datei auf oder ändert sich eine bestehende Datei, meldet der Agent das an den Wazuh-Server.
 3. Der Server schickt den **Hash** der Datei an VirusTotal. Die Datei selbst wird nicht hochgeladen.
 4. VirusTotal antwortet, wie viele Virenscanner die Datei kennen, und Wazuh macht daraus einen Alarm.
 5. Ist die Datei schädlich, schickt der Server per **Active Response** den Auftrag an den Agent, die Datei zu löschen.
@@ -60,10 +60,10 @@ Erster Test: `test.txt` wird sofort als neue Datei gemeldet.
 
 ### VirusTotal-Integration
 
-Kostenloses Konto auf virustotal.com, API-Key unter Profil → API key. Limit: 500 Abfragen pro Tag, 4 pro Minute.
+Kostenloses Konto auf virustotal.com, API-Key unter **Profil → API key**. Limit: 500 Abfragen pro Tag, 4 pro Minute.
 
 > [!WARNING]
-> Der API-Key ist ein Geheimnis. Er gehört nicht ins Repo und nicht auf Screenshots. In der Doku steht deshalb nur ein Platzhalter.
+> Der API-Key ist ein Geheimnis und wird in der Doku mit einem Platzhalter ersetzt 
 
 Auf dem **Wazuh-Server** in `/var/ossec/etc/ossec.conf` über das letzte `</ossec_config>`:
 
@@ -99,11 +99,11 @@ sudo wget -O /root/Downloads/eicar.com https://secure.eicar.org/eicar.com
 
 ![VirusTotal erkennt EICAR mit Regel 87105](../screenshots/48_20261112163616.png)
 
-**Was ein Analyst im Alarm zuerst anschaut**
+**Was ich mir im Alarm zuerst anschaut**
 - `agent.name` / `agent.ip`: wo ist es passiert
-- `data.virustotal.source.file`: welche Datei
+- `data.virustotal.source.file`: welche Datei wurde gemeldet 
 - `positives` / `total`: wie sicher (66 von 68 ist eindeutig, 1 oder 2 wäre eher ein Fehlalarm)
-- `sha1` / `md5`: Fingerabdruck, um dieselbe Datei auf anderen Rechnern zu suchen
+- `sha1` / `md5`: Fingerabdruck der Datei, um dieselbe Datei auf anderen Rechnern zu suchen
 - `permalink`: Link zum VirusTotal-Bericht
 - `rule.mitre`: automatische Zuordnung zu MITRE ATT&CK
 
@@ -119,7 +119,7 @@ sudo wget -O /root/Downloads/eicar.com https://secure.eicar.org/eicar.com
 **Auf linux-opfer:** `jq` installieren (liest JSON) und das Skript anlegen.
 
 > [!NOTE]
-> Das Skript `remove-threat.sh` habe ich mit KI-Unterstützung erstellt. Getestet habe ich es selbst, inklusive Fehlerfall.
+> Das Skript `remove-threat.sh` habe ich mit KI-Unterstützung erstellt. Getestet habe ich es selbst.
 
 ```bash
 sudo apt install -y jq
@@ -223,8 +223,8 @@ Vollständig: [local_rules.xml](../wazuh/local_rules.xml)
 **Begründung**
 - `if_sid 657`: hängt sich an die eingebaute Active-Response-Regel (in Regeln `if_sid`, `rules_id` gibt es nur im `<active-response>`-Block)
 - `match`: durchsucht die ganze Log-Zeile nach dem Text. `field` würde dagegen ein bestimmtes dekodiertes Feld prüfen.
-- **Level 10** bei Erfolg: unter dem Fund (12), weil die Gefahr automatisch beseitigt ist. Trotzdem hoch genug, damit ein Analyst nachschaut, wie die Datei auf den Rechner gekommen ist.
-- **Level 12** bei Fehler: die Schadsoftware liegt noch auf dem Rechner, ein Mensch muss eingreifen.
+- **Level 10** bei Erfolg: unter dem Level (12), weil die Gefahr automatisch beseitigt wurde. Trotzdem hoch angesetzt, damit der Fall höher gewertet im Dashboard landet und ein Analyst nachschaut wie die Datei auf den Rechner gekommen ist um weitermaßnahmen einzuleiten.
+- **Level 12** bei Fehler ein Hohes Level da die Schadsoftware immer noch auf dem Rechner ist und das eingreifen eines Menschen braucht. würde der Fehler ein niedriges Level haben könnte dieser übersehen werden und die Schadsoftware auf dem System besetehen bleiben.
 
 ### Tests
 
@@ -247,8 +247,6 @@ Filter im Dashboard: `rule.id:(87105 or 100300 or 100301)`
 ![Löschen blockiert, Regel 100301](../screenshots/52_20261112173347.png)
 
 **Test 3: Sperre aufgehoben, Datei wird automatisch entfernt**
-
-Die komplette Geschichte in einem Bild: erkannt und entfernt (17:30), Löschen blockiert (17:32), Blockade aufgehoben und automatisch entfernt (17:34).
 
 ![Alle drei Tests im Dashboard](../screenshots/53_20261112173456.png)
 
@@ -275,7 +273,7 @@ Die VirusTotal-Integration auf dem Server gilt automatisch für alle Agents. Erg
 
 **Keine eigene Active Response auf Windows**
 
-Auf Windows erkennt und entfernt der Microsoft Defender Schadsoftware selbst, meist schneller als Wazuh. So ist es auch in Firmen: Dort räumt der Defender bzw. das EDR auf, ein eigenes Löschskript baut niemand. Wichtig ist aber, dass das SIEM **sieht**, was der Defender gefunden und getan hat. Deshalb hole ich die Defender-Meldungen in Wazuh.
+Auf Windows erkennt und entfernt der Microsoft Defender Schadsoftware selbst, meist schneller als Wazuh. So ist es auch in vielen Firmen: Dort räumt der Defender bzw. das EDR auf. Wichtig ist aber, dass das SIEM **sieht**, was der Defender gefunden und getan hat. Deshalb hole ich die Defender-Meldungen in Wazuh.
 
 **Defender-Meldungen an Wazuh**
 
@@ -300,7 +298,6 @@ Invoke-WebRequest -Uri "https://secure.eicar.org/eicar.com" -OutFile "C:\Users\t
 Ergebnis (Filter `rule.groups:windows_defender`):
 - **62123, Level 12**: „detected potentially unwanted software“, der Defender hat EICAR erkannt
 - **62124, Level 3**: „performed an action to protect you“, der Defender hat die Datei entfernt
-- **62138, Level 3**: „Dynamic Signature Service“, nur Signatur-Updates im Hintergrund (Rauschen)
 
 ![Defender-Meldungen in Wazuh](../screenshots/55_20261112181257.png)
 
@@ -314,8 +311,7 @@ Ergebnis (Filter `rule.groups:windows_defender`):
 | Wie kam sie auf den Rechner? | `process Name` | `powershell.exe` |
 | Was hat der Defender getan? | `execution Name` | Angehalten |
 
-- `process Name` ist der spannendste Punkt: Die Datei kam per PowerShell aus dem Internet. In einem echten Fall wäre die nächste Frage, wer diese PowerShell gestartet hat. Das ließe sich in den Sysmon-Logs nachverfolgen.
-- Die leeren Klammern `()` in der Beschreibung kommen vermutlich daher, dass die Defender-Feldnamen Leerzeichen enthalten (`threat Name`). Die Daten selbst sind vollständig im Alarm.
+- `process Name` ist ein wichtiger Punkt: Die Datei kam per PowerShell aus dem Internet. In einem echten Fall wäre die nächste Frage, wer diese PowerShell gestartet hat. Das kann man in den Sysmon-Logs nachverfolgen.
 
 **Mögliches Tuning (offen)**
 - 62138 stumm schalten (Level 0), ist kein Sicherheitsereignis
