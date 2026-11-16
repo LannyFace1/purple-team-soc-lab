@@ -1,7 +1,5 @@
 # 04 Grundlagen: Decoder und Regeln
 
-Wie aus einer Logzeile ein Alarm wird und wie man eigene Decoder und Regeln testet.
-
 ### Vom Paket zum Alert
 1. Paket kommt an (prüfbar mit `tcpdump`)
 2. Ein **Decoder** liest die Zeile und zerlegt sie in Felder
@@ -27,7 +25,7 @@ Eigene Regeln müssen zwischen 100000 und 120000 liegen. Die Beispielregel 10000
 
 
 ### Prüfen und aktivieren
-Nach jeder Änderung erst die Syntax prüfen, dann neu starten:
+Nach jeder Änderung sollte man Testen ob die Syntax stimmt, danach starten wir den Manager erst neu:
 
 ```bash
 /var/ossec/bin/wazuh-analysisd -t
@@ -35,19 +33,19 @@ systemctl restart wazuh-manager
 ```
 
 > [!NOTE]
-> Wazuh liest Regeln nur beim Start ein. Bei einem Fehler startet der Manager nicht, deshalb immer zuerst `-t`.
+> Wazuh liest Regeln nur beim Start ein. Bei einem Fehler startet der Manager nicht, deshalb immer zuerst Testen mit`-t`.
 
 ### Rohdaten mitschreiben und testen
-Damit ich echte Zeilen testen kann, aktiviere ich das mitschreiben aller eingehenden Events. Dafür muss ich in der `/var/ossec/etc/ossec.conf` Datei im im `<global>`-Block die Änderung machen:
+Damit ich echte Zeilen testen kann, aktiviere ich das mitschreiben aller eingehenden Events. Dafür muss ich in der `/var/ossec/etc/ossec.conf` Datei im `<global>`-Block die Änderung machen:
 
 ```xml
 <logall>yes</logall>
 ```
 
-Danach den Manager neu starten. Die Rohdaten landen in `/var/ossec/logs/archives/archives.log`. Jetzt kann ich eine Zeile durch einen logtest schicken:
+Danach muss man den Manager neu starten. Die Rohdaten landen in `/var/ossec/logs/archives/archives.log`. Jetzt kann ich eine Zeile durch einen logtest schicken:
 
 > [!NOTE]
-> Den Code habe ich mir von KI geben lassen
+> Den Code habe ich mir von KI erstellen lassen
 
 ```bash
 grep SUCHBEGRIFF /var/ossec/logs/archives/archives.log | tail -n 1 | sed 's/^[^>]*>[^ ]* //' | /var/ossec/bin/wazuh-logtest
