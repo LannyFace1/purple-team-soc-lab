@@ -179,7 +179,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | 3 | Default allow LAN to any rule |
 | 4 | Default allow LAN IPv6 to any rule |
 
-![MANAGEMENT](../screenshots/21_20261108113854.png)
+![MANAGEMENT](../screenshots/21_20261108123732.png)
 
 **WAN**
 
@@ -187,7 +187,7 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | --- | ------------------------------------------------------------- |
 | 1   | Webinterface aus Heimnetz (192.168.X.0/24 → WAN address, 443) |
 
-![WAN](../screenshots/22_20261108113854.png)
+![WAN](../screenshots/22_20261108123741.png)
 
 ---
 
