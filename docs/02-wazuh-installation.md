@@ -43,6 +43,9 @@ Dann durchlaufen lassen.
 Damit ich Wazuh auch über meinen Computer im Heimnetz erreichen kann, muss ich in pfSense eine Port-Weiterleitung hinzufügen wie vorher fürs SSH.
 Das heist wir machen die gleichen schritte wie bei [Wazuh-VM über SSH erreichbar machen vom Heimnetz](###-Wazuh-VM-über-SSH-erreichbar-machen-vom-Heimnetz)
 
+![Wazuh SSH](../screenshots/25_20261108142659.png)
+
+
 ---
 
 Zurück: [01 Netzwerk und pfSense](01-netzwerk-und-pfsense.md) · [Inhaltsverzeichnis](README.md) · Weiter: [03 Sysmon auf Windows](03-sysmon-auf-windows.md)
