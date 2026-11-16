@@ -1,1 +1,30 @@
+<!--
+  Purple Team SOC Lab: Ergänzungen in der ossec.conf des Windows-Agents (win11-opfer)
+  Datei: C:\Program Files (x86)\ossec-agent\ossec.conf
+  Danach in einer Admin-PowerShell: Restart-Service -Name wazuh
+-->
 
+<!-- Innerhalb von <ossec_config>, zu den anderen <localfile>-Blöcken -->
+
+<!-- Sysmon-Ereignisse einsammeln (Prozesse, Netzwerkverbindungen, Dateien) -->
+<localfile>
+  <location>Microsoft-Windows-Sysmon/Operational</location>
+  <log_format>eventchannel</log_format>
+</localfile>
+
+<!-- Meldungen des Microsoft Defender einsammeln (Funde und Gegenmaßnahmen) -->
+<localfile>
+  <location>Microsoft-Windows-Windows Defender/Operational</location>
+  <log_format>eventchannel</log_format>
+</localfile>
+
+<!--
+  Hinweis: Das Security-Log sammelt der Agent schon standardmäßig ein.
+  Event 4698 (geplante Aufgabe erstellt) wird vom mitgelieferten Filter nicht ausgeschlossen,
+  muss aber auf Windows erst per auditpol aktiviert werden (siehe Szenario 2).
+-->
+
+<!-- Innerhalb des <syscheck>-Blocks, zu den anderen <directories>-Zeilen -->
+
+<!-- File Integrity Monitoring: neue Dateien im Downloads-Ordner sofort melden (Basis für VirusTotal) -->
+<directories realtime="yes">C:\Users\trash\Downloads</directories>
