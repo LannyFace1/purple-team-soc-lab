@@ -11,7 +11,7 @@
 	<description>Erfasste pfSense-Firewall-Events</description>
 	</rule>
 
-	<!-- Guckt in Regel 100100 und filtert nach geblockten Port-Verbindungen zum Netzbereich 10.10.0.0 -->
+	<!-- Guckt in Regel 100100 und filtert nach geblockten Port-Verbindungen aus dem Netzbereich 10.10.0.0/16 -->
 	<rule id="100101" level="3">
 		<if_sid>100100</if_sid>
     		<action>block</action>
