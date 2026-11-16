@@ -46,16 +46,25 @@ sudo systemctl status wazuh-manager
 - **Remote Syslog Contents:** Firewall Events (für Suricata später zusätzlich System Events)
 - **Save**
 
-![WAN_Einstellungen](../screenshots/30_20261110142142.png)
+![WAN_Einstellungen](../screenshots/31_20261110150322.png)
 
+### Logging an der Block-Regel einschalten
 
+pfSense loggt eigene Block-Regeln standardmäßig nicht. Unter *Firewall → Rules → ANGREIFER* bei der Regel „Kein Zugriff auf private Netze“ den Haken **„Log packets that are handled by this rule“** setzen, Save, **Apply Changes**.
 
+### Test mit Kali
 
+```bash
+nmap -Pn -sS 10.10.10.10
+```
 
+Ohne `-Pn` meldet nmap „Host seems down“, weil die Firewall sogar den Ping blockt. Das zeigt schon, dass die Segmentierung funktioniert: Aus Sicht des Angreifers ist das Management-Netz unsichtbar.
 
+In der pfSense unter **Status → System Logs → Firewall** sieht man jeden geblockten Port-Versuch von 10.10.30.100. Damit nur die Kali-Einträge zu sehen sind, über das Trichter-Symbol oben rechts den **Advanced Log Filter** öffnen, bei **Source IP Address** `10.10.30.100` eintragen und **Apply Filter** klicken.
 
+![WAN_Einstellungen](../screenshots/32_20261116.png)
 
-
+Alle Versuche laufen über das Interface ANGREIFER und werden von der Regel „Kein Zugriff auf private Netze“ geblockt, auf viele verschiedene Ports (22, 445, 3389, 8080 …).
 
 
 
