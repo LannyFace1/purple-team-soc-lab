@@ -1,9 +1,10 @@
 # Purple Team SOC Lab
-Dieses Projekt wurde gemacht um sich im Bereich der Cybersecurity weiter zu bilden und den Umgang mit SIEMs und Firewalls näher zu führen dieses Projekt ist mein erstes dieser Art.
 
 **Wazuh, pfSense und Suricata auf Proxmox, mit eigenen Decodern, eigenen Regeln, Angriffen von Kali und automatischer Reaktion.**
 
-Ein selbst gebautes Security Operations Center im Homelab. Ich greife meine eigenen Opfer-VMs von einem Kali-Rechner aus an, erkenne die Angriffe im SIEM und lasse Wazuh automatisch reagieren. Ziel war, den kompletten Weg einmal selbst zu gehen: vom Netzwerkdesign über das Einsammeln der Logs bis zur fertigen Erkennungsregel mit Gegenmaßnahme.
+Ein selbst gebautes Security Operations Center im Homelab. Ich greife meine eigenen Opfer-VMs von einem Kali-Rechner aus an, erkenne die Angriffe im SIEM und lasse Wazuh automatisch reagieren.
+
+**Warum ich das gebaut habe:** Das ist mein erstes Projekt dieser Art. Ich wollte mich mit SIEMs, Firewalls und IDS vertraut machen und den kompletten Weg einmal selbst gehen, vom Netzwerkdesign über das Einsammeln der Logs bis zur fertigen Erkennungsregel mit Gegenmaßnahme. Vieles davon habe ich mir während des Projekts erst beigebracht, und die Probleme, auf die ich dabei gestoßen bin, habe ich mit dokumentiert.
 
 > [!NOTE]
 > Die ausführliche Schritt-für-Schritt-Anleitung liegt im Ordner [`docs/`](docs/).
