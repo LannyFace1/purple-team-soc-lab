@@ -133,9 +133,10 @@ purple-team-soc-lab/
 - **Blue Team und Red Team.** Aufgefallen ist mir bei dem Projekt, dass Blue Team und Red Team viele Parallelen haben. Beide Teams wollen Schwachstellen finden, zwar aus verschiedenen Gründen, aber mit demselben Ziel. Das Blue Team, um die Lücke zu schließen. Das Red Team, um zu zeigen, dass man sie ausnutzen kann.
 - **Nicht jeder Alert ist ein Angriff.** Außerdem hat mir das Projekt gezeigt, dass nicht jeder Alert der reinkommt auch schlimm sein muss. Viele Alerts sind Fehlalarme (False Positives). Dazu kommen viele Meldungen die zwar stimmen aber von legitimen Quellen kommen, zum Beispiel von Windows selbst oder von mir als Admin. Deshalb gehört zu einem SIEM nicht nur das Erkennen, sondern auch das Aussortieren: Alerts prüfen, unwichtige Regeln stumm schalten und wichtige hochstufen.
 
-### Fazit
+## Fazit
 
-Abschließend hat mir das Projekt viel Spaß gemacht, da ich praktisch viel lernen konnte und Probleme, die aufgetreten sind, selbst lösen konnte. Ich bin zwar noch kein Experte, trotzdem fühle ich mich jetzt sicherer im Umgang mit SIEMs, Firewalls und IDS.
+Abschließend hat mir das Projekt viel Spaß gemacht, da ich praktisch viel lernen konnte und Probleme die aufgetreten sind selbst lösen konnte. Ich bin zwar noch kein Experte trotzdem fühle ich mich jetzt sicherer im Umgang mit SIEMs, Firewalls und IDS.
+
 ---
 
 ## Ausblick
