@@ -1,5 +1,4 @@
 <!--
-  Purple Team SOC Lab: eigene Wazuh-Regeln
   Datei auf dem Wazuh-Server: /var/ossec/etc/rules/local_rules.xml
   Nach Änderungen: /var/ossec/bin/wazuh-analysisd -t, dann systemctl restart wazuh-manager
 -->
