@@ -137,8 +137,8 @@ Nach dem Speichern der Regel lädt die pfSense die Regeln neu, die Firewall ist 
 
 **Angreifer → Management**
 
-![Angreifer → Management](../screenshots/13_20261108121442.png)
-![Angreifer → Management](../screenshots/14_20261108121159.png)
+![Alias PRIVATE_NETS](../screenshots/13_20261108121442.png)
+![Block-Regel Angreifer zu privaten Netzen](../screenshots/14_20261108121159.png)
 
 ---
 

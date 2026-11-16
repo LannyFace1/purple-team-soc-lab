@@ -22,7 +22,7 @@ Wichtig: **Destination** ist, wohin das Paket ursprünglich geht (die pfSense se
 
 dann sollte man in der liste die einstellung sehen 
 
-![Wazuh SSH](../screenshots/24_20261110152028.png)
+![Port-Weiterleitung SSH](../screenshots/24_20261110152028.png)
 
 Dann kann man sich mit dem bevorzugten SSH Tool Verbinden das Beispiel zeigt es über PowerShell:
 ```powershell
@@ -44,7 +44,7 @@ Dann durchlaufen lassen.
 Damit ich Wazuh auch über meinen Computer im Heimnetz erreichen kann, muss ich in pfSense eine Port-Weiterleitung hinzufügen wie vorher fürs SSH.
 Das heist wir machen die gleichen schritte wie bei **Wazuh-VM über SSH erreichbar machen vom Heimnetz**
 
-![Wazuh SSH](../screenshots/23_20261108131136.png)
+![Port-Weiterleitung Dashboard](../screenshots/23_20261108131136.png)
 
 
 **Firewall → NAT → Port Forward**: Port 8443 auf der WAN-Adresse wird an 10.10.10.10:443 weitergeleitet. So erreiche ich das Dashboard unter `https://192.168.X.54:8443`.
@@ -53,15 +53,15 @@ Das heist wir machen die gleichen schritte wie bei **Wazuh-VM über SSH erreichb
 
 Über den Wizard von Wazuh bekommen wir ggesagt was wir machen müssen um einen Agent auf unsere Opfer-VMs zu bekommen um diese dann überwachen zu können den Ablauf sieht man einmal an den nachfolgenden Bildern:
 
-![Wazuh SSH](../screenshots/25_20261108142659.png)
-![Wazuh SSH](../screenshots/26_20261108142711.png)
-![Wazuh SSH](../screenshots/27_20261108142718.png)
+![Agent-Wizard: Paket und Server-Adresse](../screenshots/25_20261108142659.png)
+![Agent-Wizard: Agent-Name und Befehl](../screenshots/26_20261108142711.png)
+![Agent-Wizard: Agent starten](../screenshots/27_20261108142718.png)
 
 Das Gleiche wird dann nochmal für den Windows Agent gemacht.
 Dann benutzt man die befehle die man unter punkt 5 bekommt und führt die commands auf der jeweiligen VM aus (Linux, Windows). 
 
 Danach sieht man beide Agent als aktiv im Dashboard:
-![Wazuh SSH](../screenshots/28_20261108142749.png)
+![Beide Agents aktiv](../screenshots/28_20261108142749.png)
 
 
 ---

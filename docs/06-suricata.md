@@ -18,7 +18,7 @@ Ich betreibe Suricata im **IDS-Modus** (nur erkennen, nicht blocken). Blocken w�
 
 **System → Package Manager → Available Packages** → `suricata` → **Install**
 
-![WAN_Einstellungen](../screenshots/35_20261110170950.png)
+![Suricata-Paket installiert](../screenshots/35_20261110170950.png)
 
 ### Regelwerke auswählen (Global Settings)
 
@@ -36,12 +36,12 @@ Ich betreibe Suricata im **IDS-Modus** (nur erkennen, nicht blocken). Blocken w�
 | Update Interval | 1 DAY | täglich neue Signaturen |
 | Keep Suricata Settings After Deinstall | ja | Konfiguration bleibt bei Neuinstallation erhalten |
 
-![WAN_Einstellungen](../screenshots/36_20261110171341.png)
-![WAN_Einstellungen](../screenshots/37_20261110171351.png)
+![Suricata Global Settings: Regelwerke](../screenshots/36_20261110171341.png)
+![Suricata Global Settings: Einstellungen behalten](../screenshots/37_20261110171351.png)
 
 Dann Reiter **Updates** → **Update**. Alle Regelwerke wurden geladen:
 
-![WAN_Einstellungen](../screenshots/38_20261110171509.png)
+![Regelwerke aktualisiert](../screenshots/38_20261110171509.png)
 
 ### Hardware-Offloading abschalten
 
@@ -68,7 +68,7 @@ Warum ANGREIFER: Jeder Angriff von Kali, egal ob auf die Opfer oder aufs Managem
 
 Dann Stift → **ANGREIFER Categories** → **Select All** → Save, und Suricata starten.
 
-![WAN_Einstellungen](../screenshots/39_20261110172519.png)
+![Suricata auf ANGREIFER, Blocking Mode aus](../screenshots/39_20261110172519.png)
 
 Status grün, **Blocking Mode: DISABLED**.
 
@@ -87,7 +87,8 @@ Umsetzung:
 
 Danach steht die Pass List bei **Assigned** auf **Yes**:
 
-![WAN_Einstellungen](../screenshots/40_20261110173310.png)
+![Home Net auf Home_LAB](../screenshots/40_20261110173310.png)
+![Pass List Home_LAB zugewiesen](../screenshots/41_20261110173339.png)
 
 ### Test mit Kali
 
@@ -97,7 +98,7 @@ sudo nmap -sS -sV -O 10.10.20.100
 
 `-sV` fragt die Versionen der Dienste ab, `-O` versucht das Betriebssystem zu erkennen. Die Firewall lässt das durch (Angreifer → Opfer ist erlaubt), Suricata erkennt es:
 
-![WAN_Einstellungen](../screenshots/41_20261110173339.png)
+![Suricata-Alarme beim nmap-Scan](../screenshots/42_20261110173610.png)
 
 - **ET SCAN Suspicious inbound to mySQL port 3306**
 - **ET SCAN Suspicious inbound to PostgreSQL port 5432**
@@ -117,13 +118,13 @@ Gleicher Weg wie bei der Firewall: Suricata schreibt ins Systemlog der pfSense, 
 - **EVE Logged Traffic** und **EVE Logged Info:** alles aus
 - **Send Alerts to System Log** muss an bleiben, sonst lädt die pfSense die Syslog-Ausgabe von Suricata nicht
 
-![WAN_Einstellungen](../screenshots/42_20261110173610.png)
+![EVE Output Settings](../screenshots/43_20261110174005.png)
 
 Warum so wenig: Syslog verschickt jede Meldung als einzelnes UDP-Paket mit begrenzter Größe. Mit Payload und Paket-Dump werden die Meldungen zu groß, werden abgeschnitten und das JSON ist kaputt. Die Listen unter „Logged Traffic/Info“ würden jeden normalen Vorgang (jede DNS-Anfrage, jeden TLS-Handshake) melden. Mich interessieren nur die **Alerts**.
 
 Zusätzlich in **Status → System Logs → Settings** bei **Remote Syslog Contents** den Haken **System Events** setzen, dort landen die Suricata-Meldungen.
 
-![WAN_Einstellungen](../screenshots/43_20261110174005.png)
+![Remote Syslog Contents mit System Events](../screenshots/44_20261110174117.png)
 
 ### Was bei Wazuh ankommt
 
@@ -277,7 +278,7 @@ Ergebnis:
 - Pro Alarm gibt es genau einen Eintrag. Wazuh geht die Kette durch und meldet nur die tiefste Regel, die gepasst hat.
 - 4 Treffer pro Scan: nmap schickt bei Ports ohne Antwort ein zweites Paket hinterher, Suricata meldet jedes davon (Zeitstempel etwa 1 Sekunde auseinander). Die frühere Verdopplung durch die Kurzform-Zeilen hätte genau dieselbe Zeit.
 
-![WAN_Einstellungen](../screenshots/44_20261110174117.png)
+![Suricata-Alarme in Wazuh mit Regel 100201 und 100202](../screenshots/45_20261112155545.png)
 
 100203 (hoch) hat beim Portscan noch nicht ausgelöst, weil ein Scan nicht als ernst gilt. Getestet wird sie bei den Angriffsszenarien.
 
