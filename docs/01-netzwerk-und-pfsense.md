@@ -2,7 +2,7 @@
 
 Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 
-## 1. Netzwerkarchitektur
+## Netzwerkarchitektur
 
 <!-- Diagramm einbinden, sobald es in diagrams/ liegt:
 ![Netzwerkarchitektur](../diagrams/netzwerkarchitektur.png)
@@ -31,7 +31,7 @@ Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 | Linux (linux-opfer)      | Opfer                | 10.10.20.100                                           |
 | Kali                     | Angreifer            | 10.10.30.100                                           |
 
-## 2. pfSense einrichten 
+## pfSense einrichten 
 
 ### Grundeinrichtung in der pfSense-Konsole direkt nach der Installation
 
