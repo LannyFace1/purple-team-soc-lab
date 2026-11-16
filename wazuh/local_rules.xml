@@ -1,95 +1,98 @@
-<!-- Local rules -->
+<!--
+  Purple Team SOC Lab: eigene Wazuh-Regeln
+  Datei auf dem Wazuh-Server: /var/ossec/etc/rules/local_rules.xml
+  Nach Änderungen: /var/ossec/bin/wazuh-analysisd -t, dann systemctl restart wazuh-manager
+-->
 
-<!-- Modify it at your will. -->
-<!-- Copyright (C) 2015, Wazuh Inc. -->
-
-<!-- pfSense Rule Set --> 
+<!-- pfSense Rule Set -->
 <group name="pfsense,firewall">
-	<!-- Erfassen sämtlicher pfSense-Events -->
-	<rule id="100100" level="0">
-	<decoded_as>pfsense-custom</decoded_as>
-	<description>Erfasste pfSense-Firewall-Events</description>
-	</rule>
 
-	<!-- Guckt in Regel 100100 und filtert nach geblockten Port-Verbindungen aus dem Netzbereich 10.10.0.0/16 -->
-	<rule id="100101" level="3">
-		<if_sid>100100</if_sid>
-    		<action>block</action>
-    		<srcip>10.10.0.0/16</srcip>
-    		<description>Erfasste geblockte port verbindungen</description>
-  	</rule>
+  <!-- Erfassen sämtlicher pfSense-Events -->
+  <rule id="100100" level="0">
+    <decoded_as>pfsense-custom</decoded_as>
+    <description>Erfasste pfSense-Firewall-Events</description>
+  </rule>
 
-	<!-- Guckt in Regel 100101, feuert erst ab 16 geblockten Verbindungsversuchen der gleichen Quell-IP innerhalb von 10 Sekunden und pausiert danach 2 Minuten -->
-	<rule id="100102" level="10" frequency="16" timeframe="10" ignore="120">
-    		<if_matched_sid>100101</if_matched_sid>
-    		<same_srcip />
-    		<description>pfSense: Portscan von $(srcip) auf $(dstip) erkannt</description>
-    		<mitre>
-      		<id>T1046</id>
-    		</mitre>
-  	</rule>
+  <!-- Guckt in Regel 100100 und filtert nach geblockten Port-Verbindungen aus dem Netzbereich 10.10.0.0/16 -->
+  <rule id="100101" level="3">
+    <if_sid>100100</if_sid>
+    <action>block</action>
+    <srcip>10.10.0.0/16</srcip>
+    <description>Erfasste geblockte port verbindungen</description>
+  </rule>
+
+  <!-- Guckt in Regel 100101, feuert erst ab 16 geblockten Verbindungsversuchen der gleichen Quell-IP innerhalb von 10 Sekunden und pausiert danach 2 Minuten -->
+  <rule id="100102" level="10" frequency="16" timeframe="10" ignore="120">
+    <if_matched_sid>100101</if_matched_sid>
+    <same_srcip />
+    <description>pfSense: Portscan von $(srcip) auf $(dstip) erkannt</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+  </rule>
+
 </group>
 
-<!-- Suricata Rule Set-->
+<!-- Suricata Rule Set -->
 <group name="suricata,ids,">
 
-	<!-- Einfangen sämtlicher Suricata-Events -->
-	<rule id="100200" level="0">
-		<decoded_as>suricata-custom</decoded_as>
-    		<description>Suricata: alle Events</description>
-  	</rule>
+  <!-- Einfangen sämtlicher Suricata-Events -->
+  <rule id="100200" level="0">
+    <decoded_as>suricata-custom</decoded_as>
+    <description>Suricata: alle Events</description>
+  </rule>
 
-	<!-- Nur echte Alarme (event_type genau "alert"). Filtert die doppelte Kurzform-Zeile raus -->
-  	<rule id="100201" level="3">
-    		<if_sid>100200</if_sid>
-    		<field name="event_type">^alert$</field>
-    		<description>Suricata: $(alert.signature)</description>
-  	</rule>
+  <!-- Nur echte Alarme (event_type genau "alert"). Filtert die doppelte Kurzform-Zeile raus -->
+  <rule id="100201" level="3">
+    <if_sid>100200</if_sid>
+    <field name="event_type">^alert$</field>
+    <description>Suricata: $(alert.signature)</description>
+  </rule>
 
-	<!-- Suricata-Severity 2 (mittel) wird auf Level 7 hochgestuft -->
-	<rule id="100202" level="7">
-  		<if_sid>100201</if_sid>
-  		<field name="alert.severity">^2$</field>
-  		<description>Suricata (mittel): $(alert.signature)</description>
-	</rule>
+  <!-- Suricata-Severity 2 (mittel) wird auf Level 7 hochgestuft -->
+  <rule id="100202" level="7">
+    <if_sid>100201</if_sid>
+    <field name="alert.severity">^2$</field>
+    <description>Suricata (mittel): $(alert.signature)</description>
+  </rule>
 
-	<!-- Suricata-Severity 1 (hoch) wird auf Level 10 hochgestuft -->
-	<rule id="100203" level="10">
-  		<if_sid>100201</if_sid>
-  		<field name="alert.severity">^1$</field>
-  		<description>Suricata (hoch): $(alert.signature)</description>
-	</rule>
+  <!-- Suricata-Severity 1 (hoch) wird auf Level 10 hochgestuft -->
+  <rule id="100203" level="10">
+    <if_sid>100201</if_sid>
+    <field name="alert.severity">^1$</field>
+    <description>Suricata (hoch): $(alert.signature)</description>
+  </rule>
+
 </group>
 
 <!-- Virustotal Rule Set -->
 <group name="virustotal,active_response,">
 
-	<!-- Hängt an Wazuhs Regel 657 (Active-Response-Log). Unterscheidet am Text aus remove-threat.sh, ob die Datei gelöscht wurde (100300) oder nicht (100301) -->
-  	<rule id="100300" level="10">
-    		<if_sid>657</if_sid>
-    		<match>Successfully removed threat</match>
-    		<description>Active Response: Bedrohung entfernt: $(parameters.alert.data.virustotal.source.file)</description>
-  	</rule>
+  <!-- Hängt an Wazuhs Regel 657 (Active-Response-Log). Unterscheidet am Text aus remove-threat.sh, ob die Datei gelöscht wurde (100300) oder nicht (100301) -->
+  <rule id="100300" level="10">
+    <if_sid>657</if_sid>
+    <match>Successfully removed threat</match>
+    <description>Active Response: Bedrohung entfernt: $(parameters.alert.data.virustotal.source.file)</description>
+  </rule>
 
-	<rule id="100301" level="12">
-		<if_sid>657</if_sid>
-                <match>Error removing threat</match>
-                <description>Active Response: Bedrohung nicht entfernt: $(parameters.alert.data.virustotal.source.file)</description>
-	</rule>	
+  <rule id="100301" level="12">
+    <if_sid>657</if_sid>
+    <match>Error removing threat</match>
+    <description>Active Response: Bedrohung nicht entfernt: $(parameters.alert.data.virustotal.source.file)</description>
+  </rule>
+
 </group>
 
 <!-- Rule Set für Bruteforce attacks -->
 <group name="bruteforce,">
 
-	<!-- Hängt an Wazuhs eingebauter Regel 5763 (sshd brute force) und dient als Auslöser für die Active Response firewall-drop -->
-  	<rule id="100400" level="10">
-    		<if_sid>5763</if_sid>
-    		<description>SSH bruteforce detected from $(srcip)</description>
-    		<mitre>
-      			<id>T1110</id>
-    		</mitre>
-  	</rule>
+  <!-- Hängt an Wazuhs eingebauter Regel 5763 (sshd brute force) und dient als Auslöser für die Active Response firewall-drop -->
+  <rule id="100400" level="10">
+    <if_sid>5763</if_sid>
+    <description>SSH bruteforce detected from $(srcip)</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
 
 </group>
-
-

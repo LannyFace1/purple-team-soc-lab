@@ -1,40 +1,27 @@
-<!-- Local Decoders -->
-
-<!-- Modify it at your will. -->
-<!-- Copyright (C) 2015, Wazuh Inc. -->
-
 <!--
-  - Allowed static fields:
-  - location   - where the log came from (only on FTS)
-  - srcuser    - extracts the source username
-  - dstuser    - extracts the destination (target) username
-  - user       - an alias to dstuser (only one of the two can be used)
-  - srcip      - source ip
-  - dstip      - dst ip
-  - srcport    - source port
-  - dstport    - destination port
-  - protocol   - protocol
-  - id         - event id
-  - url        - url of the event
-  - action     - event action (deny, drop, accept, etc)
-  - status     - event status (success, failure, etc)
-  - extra_data - Any extra data
+  Purple Team SOC Lab: eigene Wazuh-Decoder
+  Datei auf dem Wazuh-Server: /var/ossec/etc/decoders/local_decoder.xml
+  Die Decoder sind mit KI-Unterstützung entstanden und selbst mit wazuh-logtest und live getestet.
 -->
 
+<!-- pfSense: erkennt Firewall-Zeilen (filterlog) im Format RFC 5424 -->
 <decoder name="pfsense-custom">
   <prematch type="pcre2">^1 \S+ \S+ filterlog \d+ - - </prematch>
 </decoder>
 
+<!-- pfSense: zerlegt die kommagetrennten IPv4-Werte in Felder -->
 <decoder name="pfsense-custom-ipv4">
   <parent>pfsense-custom</parent>
   <regex type="pcre2" offset="after_parent">^[^,]*,[^,]*,[^,]*,[^,]*,([^,]*),[^,]*,([^,]*),([^,]*),4,(?:[^,]*,){7}([^,]*),[^,]*,([^,]*),([^,]*)(?:,([^,]*),([^,]*))?</regex>
   <order>interface,action,direction,protocol,srcip,dstip,srcport,dstport</order>
 </decoder>
 
+<!-- Suricata: erkennt Suricata-Meldungen der pfSense am Syslog-Vorspann -->
 <decoder name="suricata-custom">
   <prematch type="pcre2">^1 \S+ \S+ suricata \d+ - - </prematch>
 </decoder>
 
+<!-- Suricata: übergibt den JSON-Teil (EVE) an den eingebauten JSON_Decoder -->
 <decoder name="suricata-custom-json">
   <parent>suricata-custom</parent>
   <prematch offset="after_parent">^{</prematch>

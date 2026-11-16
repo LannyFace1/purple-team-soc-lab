@@ -67,7 +67,7 @@ Die drei Lab-Netze sind in Proxmox eigene Bridges ohne Verbindung nach außen. D
 | Schadsoftware-Download auf Linux (EICAR) | FIM + VirusTotal → 87105 | Datei wird automatisch gelöscht (eigenes Skript), Ergebnis als 100300 / 100301 | T1203 |
 | Schadsoftware-Download auf Windows (EICAR) | FIM + VirusTotal, Defender → 62123 / 62124 | Microsoft Defender entfernt die Datei | |
 | SSH-Bruteforce mit hydra | 5760 / 5763 → eigene Regel 100400 | Angreifer-IP wird per firewall-drop für 5 Minuten gesperrt | T1110 |
-| Persistenz per geplanter Aufgabe | Windows-Event 4698 → 60228 | <!-- TODO --> | T1053.005 |
+| Persistenz per geplanter Aufgabe | Windows-Event 4698 → 60228 | noch keine (geplant: Aufgabe automatisch löschen) | T1053.005 |
 | Credential Dumping (LSASS) | in Arbeit | | T1003.001 |
 
 ---

@@ -1,3 +1,12 @@
+<!--
+  Purple Team SOC Lab: VirusTotal-Integration auf dem Wazuh-Server
+  Datei: /var/ossec/etc/ossec.conf (innerhalb von <ossec_config>)
+  Danach: systemctl restart wazuh-manager
+
+  Den echten API-Key niemals ins Repo oder auf Screenshots.
+-->
+
+<!-- Bei jedem FIM-Alarm (Gruppe syscheck) wird der Hash der Datei bei VirusTotal geprüft -->
 <integration>
   <name>virustotal</name>
   <api_key>VirusTotal_API_KEY</api_key>

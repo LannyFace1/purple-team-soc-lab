@@ -1,14 +1,17 @@
-<remote>
-        <connection>syslog</connection>
-        <port>514</port>
-        <protocol>udp</protocol>
-        <allowed-ips>10.10.10.1</allowed-ips>
-        <local_ip>10.10.10.10</local_ip>
-</remote>
+<!--
+  Purple Team SOC Lab: Syslog-Empfang auf dem Wazuh-Server
+  Datei: /var/ossec/etc/ossec.conf (innerhalb von <ossec_config>)
+  Danach: systemctl restart wazuh-manager
 
+  Dieser Block kommt zusätzlich dazu. Der vorhandene <remote>-Block für die Agents
+  (connection secure, Port 1514/tcp) bleibt unverändert stehen.
+-->
+
+<!-- pfSense schickt Firewall- und Suricata-Meldungen per Syslog. Angenommen wird nur von der pfSense (10.10.10.1) -->
 <remote>
-    <connection>secure</connection>
-    <port>1514</port>
-    <protocol>tcp</protocol>
-    <queue_size>131072</queue_size>
+  <connection>syslog</connection>
+  <port>514</port>
+  <protocol>udp</protocol>
+  <allowed-ips>10.10.10.1</allowed-ips>
+  <local_ip>10.10.10.10</local_ip>
 </remote>

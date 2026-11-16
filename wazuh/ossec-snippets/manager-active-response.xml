@@ -1,29 +1,34 @@
-  <command>
-    <name>remove-threat</name>
-    <executable>remove-threat.sh</executable>
-    <timeout_allowed>no</timeout_allowed>
-  </command>
+<!--
+  Purple Team SOC Lab: Active Response auf dem Wazuh-Server
+  Datei: /var/ossec/etc/ossec.conf (innerhalb von <ossec_config>)
+  Danach: systemctl restart wazuh-manager
 
-  
-  <active-response>
-    <disabled>no</disabled>
-    <command>remove-threat</command>
-    <location>defined-agent</location>
-    <agent_id>001</agent_id>
-    <rules_id>87105</rules_id>
-  </active-response>
+  Das Skript remove-threat.sh (siehe scripts/) muss auf dem Agent liegen, nicht auf dem Server.
+  Der <command>-Block für firewall-drop ist in Wazuh schon vordefiniert.
+-->
 
-  <active-response>
-    <disabled>no</disabled>
-    <command>firewall-drop</command>
-    <location>defined-agent</location>
-    <agent_id>001</agent_id>
-    <rules_id>100400</rules_id>
-    <timeout>300</timeout>
-  </active-response>
-  
+<!-- Eigenes Skript zum Löschen von Schadsoftware. Kein Timeout, weil man ein Löschen nicht rückgängig machen kann -->
+<command>
+  <name>remove-threat</name>
+  <executable>remove-threat.sh</executable>
+  <timeout_allowed>no</timeout_allowed>
+</command>
 
-  <!-- Log analysis -->
-  <localfile>
-  <log_format>command</log_format>
-  <command>df -P</command>
+<!-- Szenario VirusTotal: Bei einem VirusTotal-Fund (Regel 87105) löscht linux-opfer die Datei -->
+<active-response>
+  <disabled>no</disabled>
+  <command>remove-threat</command>
+  <location>defined-agent</location>
+  <agent_id>001</agent_id>
+  <rules_id>87105</rules_id>
+</active-response>
+
+<!-- Szenario 1: Bei SSH-Bruteforce (Regel 100400) sperrt linux-opfer die Angreifer-IP für 5 Minuten per iptables -->
+<active-response>
+  <disabled>no</disabled>
+  <command>firewall-drop</command>
+  <location>defined-agent</location>
+  <agent_id>001</agent_id>
+  <rules_id>100400</rules_id>
+  <timeout>300</timeout>
+</active-response>

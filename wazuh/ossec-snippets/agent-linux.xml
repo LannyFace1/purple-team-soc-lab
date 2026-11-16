@@ -1,1 +1,10 @@
-<directories realtime="yes">/root/Downloads</directories><directories realtime="yes">/root/Downloads</directories>
+<!--
+  Purple Team SOC Lab: Ergänzung in der ossec.conf des Linux-Agents (linux-opfer)
+  Datei: /var/ossec/etc/ossec.conf
+  Danach: sudo systemctl restart wazuh-agent
+-->
+
+<!-- Innerhalb des <syscheck>-Blocks, zu den anderen <directories>-Zeilen -->
+
+<!-- File Integrity Monitoring: neue Dateien im Downloads-Ordner sofort melden (Basis für VirusTotal) -->
+<directories realtime="yes">/root/Downloads</directories>
