@@ -66,17 +66,10 @@ In der pfSense unter **Status → System Logs → Firewall** sieht man jeden geb
 
 Alle Versuche laufen über das Interface ANGREIFER und werden von der Regel „Kein Zugriff auf private Netze“ geblockt, auf viele verschiedene Ports (22, 445, 3389, 8080 …).
 
-
-
-
-
-
-
-
-
+<!--
 > [!NOTE]
 > Inhalt folgt.
-
+-->
 ---
 
 Zurück: [04 Grundlagen: Decoder und Regeln](04-grundlagen-decoder-und-regeln.md) · [Inhaltsverzeichnis](README.md) · Weiter: [06 Suricata (IDS)](06-suricata.md)
