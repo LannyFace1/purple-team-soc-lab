@@ -5,13 +5,13 @@
 
 <!-- pfSense Rule Set --> 
 <group name="pfsense,firewall">
-	<!-- Erfassen sämmtlicher pfSense Events -->
+	<!-- Erfassen sämtlicher pfSense-Events -->
 	<rule id="100100" level="0">
 	<decoded_as>pfsense-custom</decoded_as>
 	<description>Erfasste pfSense-Firewall-Events</description>
 	</rule>
 
-	<!-- Guckt in regel 100100 und filtert nach geblocket port Verbindungen zum Netzbereich 10.10.0.0 -->
+	<!-- Guckt in Regel 100100 und filtert nach geblockten Port-Verbindungen zum Netzbereich 10.10.0.0 -->
 	<rule id="100101" level="3">
 		<if_sid>100100</if_sid>
     		<action>block</action>
@@ -19,7 +19,7 @@
     		<description>Erfasste geblockte port verbindungen</description>
   	</rule>
 
-	<!-- Guckt in regel 100101 feuert erst ab 16 geblockten Verbindungsversuchen der gleichen Quell-IP innerhalb von 10 sekunden und pausiert danach 2 minuten -->
+	<!-- Guckt in Regel 100101, feuert erst ab 16 geblockten Verbindungsversuchen der gleichen Quell-IP innerhalb von 10 Sekunden und pausiert danach 2 Minuten -->
 	<rule id="100102" level="10" frequency="16" timeframe="10" ignore="120">
     		<if_matched_sid>100101</if_matched_sid>
     		<same_srcip />
@@ -33,7 +33,7 @@
 <!-- Suricata Rule Set-->
 <group name="suricata,ids,">
 
-	<!-- einfangen sämmtlicher Suricata Events -->
+	<!-- Einfangen sämtlicher Suricata-Events -->
 	<rule id="100200" level="0">
 		<decoded_as>suricata-custom</decoded_as>
     		<description>Suricata: alle Events</description>
@@ -81,7 +81,7 @@
 <!-- Rule Set für Bruteforce attacks -->
 <group name="bruteforce,">
 
-	<!-- Hängt an Wazuhs eingebaute Regel 5763 (sshd brute force) und dient als Auslöser für die Active Response firewall-drop) -->
+	<!-- Hängt an Wazuhs eingebauter Regel 5763 (sshd brute force) und dient als Auslöser für die Active Response firewall-drop -->
   	<rule id="100400" level="10">
     		<if_sid>5763</if_sid>
     		<description>SSH bruteforce detected from $(srcip)</description>
