@@ -21,10 +21,6 @@
   - extra_data - Any extra data
 -->
 
-<decoder name="local_decoder_example">
-    <program_name>local_decoder_example</program_name>
-</decoder>
-
 <decoder name="pfsense-custom">
   <prematch type="pcre2">^1 \S+ \S+ filterlog \d+ - - </prematch>
 </decoder>
