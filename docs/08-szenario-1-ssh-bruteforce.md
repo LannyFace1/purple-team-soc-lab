@@ -3,6 +3,7 @@
 ### Ziel:
 Ein Angreifer (Kali) versucht, sich per SSH-Bruteforce Zugang zur Linux-Opfer-VM zu verschaffen. Ich zeige, wie der Angriff abläuft, wie Wazuh und Suricata ihn erkennen, wie OpenSSH sich selbst wehrt und wie Wazuh den Angreifer am Ende per Active Response automatisch sperrt.
 
+||| 
 |---|---|
 | **Angreifer** | Kali (10.10.30.100) |
 | **Ziel** | linux-opfer (10.10.20.100), SSH |
