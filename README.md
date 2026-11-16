@@ -7,7 +7,7 @@ Ein selbst gebautes Security Operations Center im Homelab. Ich greife meine eige
 **Warum ich das gebaut habe:** Das ist mein erstes Projekt dieser Art. Ich wollte mich mit SIEMs, Firewalls und IDS vertraut machen und den kompletten Weg einmal selbst gehen, vom Netzwerkdesign über das Einsammeln der Logs bis zur fertigen Erkennungsregel mit Gegenmaßnahme. Vieles davon habe ich mir während des Projekts erst beigebracht, und die Probleme, auf die ich dabei gestoßen bin, habe ich mit dokumentiert.
 
 > [!NOTE]
-> Die ausführliche Schritt-für-Schritt-Anleitung liegt im Ordner [`docs/`](docs/).
+> Die ausführliche Schritt-für-Schritt-Anleitung liegt im Ordner [`docs/`](docs/README.md).
 
 ---
 
@@ -96,6 +96,17 @@ Die Dateien liegen in [`wazuh/`](wazuh/).
 purple-team-soc-lab/
 ├── README.md
 ├── docs/                         ausführliche Anleitung pro Abschnitt
+│   ├── README.md                 Inhaltsverzeichnis
+│   ├── 01-netzwerk-und-pfsense.md
+│   ├── 02-wazuh-installation.md
+│   ├── 03-sysmon-auf-windows.md
+│   ├── 04-grundlagen-decoder-und-regeln.md
+│   ├── 05-pfsense-logs-an-wazuh.md
+│   ├── 06-suricata.md
+│   ├── 07-fim-virustotal-active-response.md
+│   ├── 08-szenario-1-ssh-bruteforce.md
+│   ├── 09-szenario-2-persistenz.md
+│   └── 10-geloeste-probleme.md
 ├── diagrams/                     Netzwerkarchitektur
 ├── screenshots/                  Belege aus Dashboard, pfSense und Kali
 ├── scripts/
