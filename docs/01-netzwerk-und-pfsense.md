@@ -60,8 +60,13 @@ Schritte für das LAN-Interface (Menüpunkt 2):
 > [!NOTE]
 > Das wird für OPT1 (Opfer) und OPT2 (Angreifer) wiederholt, nur mit den jeweiligen IPs aus der Tabelle oben.
 
-> [!NOTE]
-> Inhalt folgt.
+In der Weboberfläche müssen wir jetzt noch eine Einstellung vornehmen unter
+
+Interface -> WAN
+nach ganz unten scrollen und da die Einstellungen 
+
+![Reserved Networks Setting](screenshots/07_20261108113854.png)
+
 
 ---
 
