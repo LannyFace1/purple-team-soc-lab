@@ -46,6 +46,23 @@ Das heist wir machen die gleichen schritte wie bei [Wazuh-VM über SSH erreichba
 
 ![Wazuh SSH](../screenshots/23_20261108131136.png)
 
+
+**Firewall → NAT → Port Forward**: Port 8443 auf der WAN-Adresse wird an 10.10.10.10:443 weitergeleitet. So erreiche ich das Dashboard unter `https://192.168.X.54:8443`.
+
+### Wazuh-Agents
+
+Über den Wizard von Wazuh bekommen wir ggesagt was wir machen müssen um einen Agent auf unsere Opfer-VMs zu bekommen um diese dann überwachen zu können den Ablauf sieht man einmal an den nachfolgenden Bildern:
+
+![Wazuh SSH](../screenshots/25_20261108142659.png)
+![Wazuh SSH](../screenshots/26_20261108142711.png)
+![Wazuh SSH](../screenshots/27_20261108142718.png)
+
+Das Gleiche wird dann nochmal für den Windows Agent gemacht.
+
+Danach sieht man sie als aktiv im Dashboard:
+![Wazuh SSH](../screenshots/28_20261108142749.png)
+
+
 ---
 
 Zurück: [01 Netzwerk und pfSense](01-netzwerk-und-pfsense.md) · [Inhaltsverzeichnis](README.md) · Weiter: [03 Sysmon auf Windows](03-sysmon-auf-windows.md)
