@@ -126,19 +126,29 @@ Nach dem Speichern der Regel lädt die pfSense die Regeln neu, die Firewall ist 
 **Angreifer → Opfer**
 ![Angreifer → Opfer](../screenshots/11_20261108120523.png)
 
+---
+
 **Opfer → Angreifer**
 ![Opfer → Angreifer](../screenshots/12_20261108120837.png)
+
+---
 
 **Angreifer → Management**
 ![Angreifer → Management](../screenshots/13_20261108121442.png)
 ![Angreifer → Management](../screenshots/14_20261108121159.png)
 
+---
+
 **Opfer → Wazuh**
 ![Opfer → Wazuh](../screenshots/15_20261108122145.png)
 ![Opfer → Wazuh](../screenshots/16_20261108122155.png)
 
+---
+
 **Opfer → Heimnetz**
 ![Opfer → Heimnetz](../screenshots/17_20261108122530.png)
+
+---
 
 **Management → Heimnetz**
 ![Management → Heimnetz](../screenshots/18_20261108122732.png)
@@ -158,6 +168,8 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 
 ![ANGREIFER](../screenshots/19_20261108123527.png)
 
+---
+
 **OPFER**
 
 | # | Action | Protocol | Source | Destination | Port | Description |
@@ -170,6 +182,8 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 
 ![OPFER](../screenshots/20_20261108123721.png)
 
+---
+
 **MANAGEMENT**
 
 | # | Regel |
@@ -180,6 +194,8 @@ pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gew
 | 4 | Default allow LAN IPv6 to any rule |
 
 ![MANAGEMENT](../screenshots/21_20261108123732.png)
+
+---
 
 **WAN**
 
