@@ -58,7 +58,7 @@ Das heist wir machen die gleichen schritte wie bei **Wazuh-VM über SSH erreichb
 ![Wazuh SSH](../screenshots/27_20261108142718.png)
 
 Das Gleiche wird dann nochmal für den Windows Agent gemacht.
-Dann benutzt man die befehle die man unter punkt 5 bekommt und führt die commands auf der jeweiligen VM aus. 
+Dann benutzt man die befehle die man unter punkt 5 bekommt und führt die commands auf der jeweiligen VM aus (Linux, Windows). 
 
 Danach sieht man beide Agent als aktiv im Dashboard:
 ![Wazuh SSH](../screenshots/28_20261108142749.png)
