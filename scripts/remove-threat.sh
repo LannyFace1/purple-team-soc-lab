@@ -1,5 +1,5 @@
 #!/bin/bash
-# Active Response: löscht eine Datei, die VirusTotal als schädlich gemeldet hat
+# Active Response: löscht automatisch eine Datei, die VirusTotal als schädlich gemeldet hat
 
 LOG_FILE="/var/ossec/logs/active-responses.log"
 
