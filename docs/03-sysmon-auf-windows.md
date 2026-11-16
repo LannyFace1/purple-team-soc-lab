@@ -39,7 +39,11 @@ wenn nach dem neu laden keine Fehler kommen können wir prüfen ob der Wazuh-Age
 Select-String -Path "C:\Program Files (x86)\ossec-agent\ossec.log" -Pattern "Sysmon"
 ```
 
+![Sysmon Log](../screenshots/29_20261110142007.png)
 
+Jetzt können wir im Wazuh-Dashboard nachschauen und sehen, dass bereits Sysmon-Events verarbeitet und MITRE-Techniken zugeordnet werden.
+
+![Sysmon Log](../screenshots/30_20261110142142.png)
 ---
 
 Zurück: [02 Wazuh-Installation](02-wazuh-installation.md) · [Inhaltsverzeichnis](README.md) · Weiter: [04 Grundlagen: Decoder und Regeln](04-grundlagen-decoder-und-regeln.md)
