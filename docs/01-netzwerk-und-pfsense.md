@@ -55,7 +55,7 @@ Schritte für das LAN-Interface (Menüpunkt 2):
 10. `Enter the start address of the IPv4 client address range` → `10.10.10.100`
 11. `Enter the end address of the IPv4 client address range` → `10.10.10.200`
 12. `Do you want to revert to HTTP as the webConfigurator protocol?` → `n`
-13. Enter zum Abschließen. Danach ist das Webinterface unter `https://10.10.10.1` erreichbar.
+13. Enter zum Abschließen. Danach ist das Webinterface von pfSense unter `https://10.10.10.1` erreichbar.
 
 > [!NOTE]
 > Das wird für OPT1 (Opfer) und OPT2 (Angreifer) wiederholt, nur mit den jeweiligen IPs aus der Tabelle oben.
