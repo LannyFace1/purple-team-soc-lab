@@ -1,0 +1,12 @@
+# Schutz vor Geheimnissen: die komplette ossec.conf enthält den VirusTotal-API-Key.
+# Ins Repo kommen nur die Ausschnitte in wazuh/ossec-snippets/ mit Platzhalter.
+ossec.conf
+*.key
+*.pem
+.env
+
+# Obsidian und Betriebssystem
+.obsidian/
+.DS_Store
+Thumbs.db
+desktop.ini
