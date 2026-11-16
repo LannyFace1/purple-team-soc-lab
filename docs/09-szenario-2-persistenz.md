@@ -1,9 +1,7 @@
 # 09 Szenario 2: Persistenz
 
-Persistenz über eine geplante Aufgabe und Erkennung über Windows-Event 4698.
-
 ### Ziel:
-Ein Angreifer legt auf dem Windows-Opfer eine geplante Aufgabe an, die bei jeder Anmeldung automatisch startet. Ich zeige, wie die Aufgabe angelegt wird und wie Wazuh das Anlegen erkennt.
+Ein Angreifer legt auf der Windows-Opfer-VM eine geplante Aufgabe an, die bei jeder Anmeldung automatisch startet. Ich zeige, wie die Aufgabe angelegt wird und wie Wazuh das Anlegen erkennt.
 
 | | |
 |---|---|
@@ -24,7 +22,7 @@ GUID statt Name, weil die Unterkategorie auf deutschem Windows anders heißt. Da
 
 ### Angriff: geplante Aufgabe anlegen
 
-Auf win11-opfer lege ich als Angreifer eine Aufgabe an, die bei jeder Anmeldung startet:
+Auf win11-opfer lege ich als Angreifer eine Aufgabe an, die bei jeder Anmeldung startet. in dem Szenario gehen wir davon aus das der angreife zugriff auf den Rechner hat und bereits einen Account mit erhöhten rechten hat:
 
 ```powershell
 schtasks /create /tn "PERSIST" /sc onlogon /tr "cmd.exe /c calc.exe" /f
