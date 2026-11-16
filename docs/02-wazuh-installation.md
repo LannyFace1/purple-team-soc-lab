@@ -22,6 +22,7 @@ Wichtig: **Destination** ist, wohin das Paket ursprünglich geht (die pfSense se
 
 dann sollte man in der liste die einstellung sehen 
 
+![Wazuh SSH](../screenshots/23_20261108131136.png)
 
 ---
 
