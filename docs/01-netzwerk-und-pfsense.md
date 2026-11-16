@@ -62,10 +62,9 @@ Schritte für das LAN-Interface (Menüpunkt 2):
 
 In der Weboberfläche müssen wir jetzt noch eine Einstellung vornehmen unter
 
-Interface -> WAN
-nach ganz unten scrollen und da die Einstellungen 
+Interface -> WAN nach ganz unten scrollen und da die Einstellungen 
 
-![Reserved Networks Setting](screenshots/07_20261108113854.png)
+![Reserved Networks Setting](purple-team-soc-lab/screenshots/07_20261108113854.png)
 
 
 ---
