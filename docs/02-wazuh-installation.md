@@ -3,7 +3,7 @@
 Wazuh All-in-One installieren, Dashboard erreichen, Agents verbinden.
 
 ### Wazuh-VM über SSH erreichbar machen vom Heimnetz
-Gleiches Prinzip wie bei der pfSense Weboberfäche für SSH, damit ich Befehle bequemer ausführen kann und auch einfügen direkt in der Konsole(in der Proxmox-Konsole geht kein Einfügen).
+Gleiches Prinzip wie bei der pfSense Weboberfäche für SSH, damit ich Befehle bequemer ausführen kann und auch einfügen direkt in der Konsole kann (in der Proxmox-Konsole geht kein Einfügen).
 
 in pfSense unter **Firewall → NAT → Port Forward → ADD** 
 
@@ -24,7 +24,7 @@ dann sollte man in der liste die einstellung sehen
 
 ![Port-Weiterleitung SSH](../screenshots/24_20261110152028.png)
 
-Dann kann man sich mit dem bevorzugten SSH Tool Verbinden das Beispiel zeigt es über PowerShell:
+Dann kann man sich mit dem bevorzugten SSH Tool Verbinden zum Beispiel über PowerShell:
 ```powershell
 ssh debian@192.168.X.54 -p 2222
 ```
@@ -41,7 +41,7 @@ Dann durchlaufen lassen.
 
 ### Dashboard aus dem Heimnetz erreichen
 
-Damit ich Wazuh auch über meinen Computer im Heimnetz erreichen kann, muss ich in pfSense eine Port-Weiterleitung hinzufügen wie vorher fürs SSH.
+Damit ich die Wazuh-Webobwefläche auch über meinen Computer im Heimnetz erreichen kann, muss ich in pfSense eine Port-Weiterleitung hinzufügen wie vorher fürs SSH.
 Das heist wir machen die gleichen schritte wie bei **Wazuh-VM über SSH erreichbar machen vom Heimnetz**
 
 ![Port-Weiterleitung Dashboard](../screenshots/23_20261108131136.png)
@@ -51,7 +51,7 @@ Das heist wir machen die gleichen schritte wie bei **Wazuh-VM über SSH erreichb
 
 ### Wazuh-Agents
 
-Über den Wizard von Wazuh bekommen wir ggesagt was wir machen müssen um einen Agent auf unsere Opfer-VMs zu bekommen um diese dann überwachen zu können den Ablauf sieht man einmal an den nachfolgenden Bildern:
+Über den Wizard von Wazuh bekommen wir gesagt was wir machen müssen um einen Agent auf unsere Opfer-VMs zu bekommen um diese dann überwachen zu können den Ablauf sieht man einmal an den nachfolgenden Bildern:
 
 ![Agent-Wizard: Paket und Server-Adresse](../screenshots/25_20261108142659.png)
 ![Agent-Wizard: Agent-Name und Befehl](../screenshots/26_20261108142711.png)
