@@ -1,5 +1,4 @@
 <!--
-  Purple Team SOC Lab: Ergänzungen in der ossec.conf des Windows-Agents (win11-opfer)
   Datei: C:\Program Files (x86)\ossec-agent\ossec.conf
   Danach in einer Admin-PowerShell: Restart-Service -Name wazuh
 -->
