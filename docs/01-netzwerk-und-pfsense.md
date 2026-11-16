@@ -72,7 +72,7 @@ Schritte für das LAN-Interface (Menüpunkt 2):
 | **Set Admin WebGUI Password** | Hier unbedingt ein eigenes, sicheres Passwort setzen                                                                                                                       |
 | Reload                        | **Reload** klicken, kurz warten, dann **Finish**                                                                                                                           |
 
-falls man die Einstellungen  **„Block RFC1918 Private Networks“** und **„Block bogon networks“** noch nicht vorgenommen hat kann man die im nachhinein noch machen unter Interface -> WAN nach ganz unten scrollen und die beiden Häkchen falls vorhanden rausnehmen.
+falls man die Einstellungen  **„Block RFC1918 Private Networks“** und **„Block bogon networks“** noch nicht vorgenommen hat kann man die im nachhinein noch machen unter **Interface → WAN** nach ganz unten scrollen und die beiden Häkchen falls vorhanden rausnehmen und auf **Save** drücken.
 
 ![Reserved Networks Setting](../screenshots/07_20261108113854.png)
 
@@ -80,6 +80,116 @@ Warum die WAN-Haken raus müssen: Mein Heimnetz (192.168.X.0/24) ist selbst ein 
 
 ### Zugriff aus dem Heimnetz aufs Webinterface
 
+Um aus meinem Heimnetz mit meinem Computer auf die Weboberfläche zugreifen zu können, müssen ein paar Einstellungen gemacht werden. 
+
+ In der pfSense-Konsole die Firewall kurz deaktivieren mit:
+   ```
+   pfctl -d
+   ```
+2. Die IP im Browser aufrufen
+3. Unter **Firewall → Rules → WAN** auf **Add** klicken und eine Regel für 443 aus 192.168.X.0/24 anlegen
+![Reserved Networks Setting](../screenshots/08_20261108113854.png)
+![Reserved Networks Setting](../screenshots/09_20261108113854.png)
+![Reserved Networks Setting](../screenshots/10_20261108113854.png)
+
+Nach dem Speichern der Regel lädt die pfSense die Regeln neu, die Firewall ist dann automatisch wieder aktiv.
+
+### Interfaces umbenennen
+
+- LAN → Management
+- OPT1 → Opfer
+- OPT2 → Angreifer
+
+### Was darf wer?
+
+| Von → Nach | Erlaubt? | Warum |
+|---|---|---|
+| Angreifer → Opfer | alles | Das ist der Sinn des Labs |
+| Opfer → Angreifer | alles | Für Reverse Shells |
+| Opfer → Wazuh | nur Port 1514 und 1515 | Wazuh-Agents liefern ihre Logs ab |
+| Lab → pfSense DNS | nur Port 53 | Damit Namen wie google.com aufgelöst werden |
+| Angreifer → Management | nein | Der Angreifer soll mein SIEM nicht angreifen |
+| Lab → Heimnetz | nein | Verwundbare VMs dürfen nie an meine echten Geräte |
+| Lab → pfSense Webinterface | nein | Opfer und Angreifer sollen die Firewall nicht verwalten können |
+| Lab → Internet | erlaubt | Für Updates und Downloads |
+| Management → Heimnetz | nein | Defense in Depth |
+
+### Aliase
+
+| Alias        | Inhalt                                    | Zweck                                     |
+| ------------ | ----------------------------------------- | ----------------------------------------- |
+| PRIVATE_NETS | 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 | Block-Regeln für private Netze            |
+| WAZUH        | 10.10.10.10                               | Agent-Regel und Port-Weiterleitungen      |
+| LAB_SCHUTZ   | 10.10.10.0/24, 10.10.20.0/24              | HOME_NET für Suricata (siehe Abschnitt 7) |
+
+### Firewall-Regeln erstellen
+**Angreifer → Opfer**
+![Reserved Networks Setting](../screenshots/11_20261108113854.png)
+
+**Opfer → Angreifer**
+![Reserved Networks Setting](../screenshots/12_20261108113854.png)
+
+**Angreifer → Management**
+![Reserved Networks Setting](../screenshots/13_20261108113854.png)
+![Reserved Networks Setting](../screenshots/14_20261108113854.png)
+
+**Opfer → Wazuh**
+![Reserved Networks Setting](../screenshots/15_20261108113854.png)
+![Reserved Networks Setting](../screenshots/16_20261108113854.png)
+
+**Opfer → Heimnetz**
+![Reserved Networks Setting](../screenshots/17_20261108113854.png)
+
+**Management → Heimnetz**
+![Reserved Networks Setting](../screenshots/18_20261108113854.png)
+
+### Alle Regeln pro Netz (in genau dieser Reihenfolge)
+
+pfSense arbeitet die Regeln von oben nach unten ab, die erste passende Regel gewinnt. Deshalb stehen die Block-Regeln für private Netze vor der allgemeinen Internet-Regel.
+
+**ANGREIFER**
+
+| #   | Action | Protocol | Source            | Destination       | Port     | Description                                    |
+| --- | ------ | -------- | ----------------- | ----------------- | -------- | ---------------------------------------------- |
+| 1   | Pass   | Any      | ANGREIFER subnets | OPFER subnets     |          | Angriffe auf Opfer                             |
+| 2   | Pass   | TCP/UDP  | ANGREIFER subnets | ANGREIFER address | DNS (53) | DNS über pfSense                               |
+| 3   | Block  | Any      | ANGREIFER subnets | PRIVATE_NETS      |          | Kein Zugriff auf private Netze (Logging aktiv) |
+| 4   | Pass   | Any      | ANGREIFER subnets | any               |          | Internet                                       |
+
+![Reserved Networks Setting](../screenshots/19_20261108113854.png)
+
+**OPFER**
+
+| # | Action | Protocol | Source | Destination | Port | Description |
+|---|---|---|---|---|---|---|
+| 1 | Pass | TCP | OPFER subnets | WAZUH | 1514 bis 1515 | Wazuh-Agent |
+| 2 | Pass | Any | OPFER subnets | ANGREIFER subnets | | Reverse Shells |
+| 3 | Pass | TCP/UDP | OPFER subnets | OPFER address | DNS (53) | DNS über pfSense |
+| 4 | Block | Any | OPFER subnets | PRIVATE_NETS | | Kein Zugriff auf private Netze |
+| 5 | Pass | Any | OPFER subnets | any | | Internet |
+
+![Reserved Networks Setting](../screenshots/20_20261108113854.png)
+
+**MANAGEMENT**
+
+| # | Regel |
+|---|---|
+| 1 | Anti-Lockout Rule |
+| 2 | Kein Zugriff aufs Heimnetz |
+| 3 | Default allow LAN to any rule |
+| 4 | Default allow LAN IPv6 to any rule |
+
+![Reserved Networks Setting](../screenshots/21_20261108113854.png)
+
+**WAN**
+
+| #   | Regel                                                         |
+| --- | ------------------------------------------------------------- |
+| 1   | Webinterface aus Heimnetz (192.168.X.0/24 → WAN address, 443) |
+
+![Reserved Networks Setting](../screenshots/22_20261108113854.png)
+
 ---
 
 [Inhaltsverzeichnis](README.md) · Weiter: [02 Wazuh-Installation](02-wazuh-installation.md)
+
