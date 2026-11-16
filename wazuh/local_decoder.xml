@@ -1,5 +1,4 @@
 <!--
-  Purple Team SOC Lab: eigene Wazuh-Decoder
   Datei auf dem Wazuh-Server: /var/ossec/etc/decoders/local_decoder.xml
   Die Decoder sind mit KI-Unterstützung entstanden und selbst mit wazuh-logtest und live getestet.
 -->
