@@ -29,12 +29,32 @@ Aufbau der drei Lab-Netze, pfSense als Gateway und Firewall-Regeln.
 > Die drei Lab-Netze sind in Proxmox eigene Bridges ohne Bridge-Port (vmbr1, vmbr2, vmbr3).
 > Sie haben also keine Verbindung nach außen, der ganze Verkehr läuft über die pfSense.
 
-## Erstellen der VLans in der pfSense Konsole
+## Grundeinrichtung in der pfSense-Konsole direkt nach der Installation
 
 **Interface zuweisen**:  WAN = vtnet0, LAN = vtnet1, OPT1 = vtnet2, OPT2 = vtnet3
 **LAN-IP**:              10.10.10.1/24 (kein Gateway, kein IPv6)
 **DHCP auf LAN**:        10.10.10.100 bis 10.10.10.200
 **Webinterface**:        bleibt bei HTTPS
+
+Beispiel:
+1. Enter an option → 2 (Set interface(s) IP address)
+2. Enter the number of the interface you wish to configure → 2 (LAN)
+3. Configure IPv4 address LAN interface via DHCP? → n
+4. Enter the new LAN IPv4 address → 10.10.10.1
+5. Enter the new LAN IPv4 subnet bit count → 24
+6. For a LAN, press <ENTER> for none (Gateway) → Enter
+7. Configure IPv6 address LAN interface via DHCP6? → n
+8. Enter the new LAN IPv6 address → Enter (keine)
+9. Do you want to enable the DHCP server on LAN? → y
+10. Enter the start address of the IPv4 client address range → 10.10.10.100
+11. Enter the end address of the IPv4 client address range → 10.10.10.200
+12. Do you want to revert to HTTP as the webConfigurator protocol? → n
+13. Enter zum Abschließen. Danach ist das Webinterface unter https://10.10.10.1 erreichbar.
+
+> [!NOTE]
+> Das wird für alle VLans wiederholt nur mit abgeönderten eingaben
+
+
 
 
 
