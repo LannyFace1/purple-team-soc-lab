@@ -11,7 +11,7 @@
 	<description>Erfasste pfSense-Firewall-Events</description>
 	</rule>
 
-	<!-- Guckt in regel 100100 und filtert nach geblocket port Verbindungen vom host 10.10.0.0 -->
+	<!-- Guckt in regel 100100 und filtert nach geblocket port Verbindungen zum Netzbereich 10.10.0.0 -->
 	<rule id="100101" level="3">
 		<if_sid>100100</if_sid>
     		<action>block</action>
@@ -19,7 +19,7 @@
     		<description>Erfasste geblockte port verbindungen</description>
   	</rule>
 
-	<!-- Guckt in regel 100101 und filtert Port Scanns feuert erst ab 16 scans innerhalb von 10 sekunden und pausiert für 2 minuten -->
+	<!-- Guckt in regel 100101 feuert erst ab 16 geblockten Verbindungsversuchen der gleichen Quell-IP innerhalb von 10 sekunden und pausiert danach 2 minuten -->
 	<rule id="100102" level="10" frequency="16" timeframe="10" ignore="120">
     		<if_matched_sid>100101</if_matched_sid>
     		<same_srcip />
@@ -39,21 +39,21 @@
     		<description>Suricata: alle Events</description>
   	</rule>
 
-	<!-- Überprüft die regel 100200 und filtert nach events die das wort alert beinhalten -->
+	<!-- Nur echte Alarme (event_type genau "alert"). Filtert die doppelte Kurzform-Zeile raus -->
   	<rule id="100201" level="3">
     		<if_sid>100200</if_sid>
     		<field name="event_type">^alert$</field>
     		<description>Suricata: $(alert.signature)</description>
   	</rule>
 
-	<!-- Überprüft die regel 100201 und filtert alle alerts die eine severity 
-	ab level 2 haben damit wir diese im wazuh dashboard angezeiggt bekommen -->
+	<!-- Suricata-Severity 2 (mittel) wird auf Level 7 hochgestuft -->
 	<rule id="100202" level="7">
   		<if_sid>100201</if_sid>
   		<field name="alert.severity">^2$</field>
   		<description>Suricata (mittel): $(alert.signature)</description>
 	</rule>
 
+	<!-- Suricata-Severity 1 (hoch) wird auf Level 10 hochgestuft -->
 	<rule id="100203" level="10">
   		<if_sid>100201</if_sid>
   		<field name="alert.severity">^1$</field>
@@ -64,8 +64,7 @@
 <!-- Virustotal Rule Set -->
 <group name="virustotal,active_response,">
 
-	<!-- guckt auf die antworten des decoders und guckt welche id vom decoder gesendet wurde 
-	und reagiert demensprechend (657 = Success, 657 = Error) -->
+	<!-- Hängt an Wazuhs Regel 657 (Active-Response-Log). Unterscheidet am Text aus remove-threat.sh, ob die Datei gelöscht wurde (100300) oder nicht (100301) -->
   	<rule id="100300" level="10">
     		<if_sid>657</if_sid>
     		<match>Successfully removed threat</match>
@@ -82,8 +81,7 @@
 <!-- Rule Set für Bruteforce attacks -->
 <group name="bruteforce,">
 
-	<!-- guckt auf die antworten des decoders und guckt welche id vom decoder gesendet wurde 
-	und reagiert demensprechend (5763 = SSH bruteforce detected) -->
+	<!-- Hängt an Wazuhs eingebaute Regel 5763 (sshd brute force) und dient als Auslöser für die Active Response firewall-drop) -->
   	<rule id="100400" level="10">
     		<if_sid>5763</if_sid>
     		<description>SSH bruteforce detected from $(srcip)</description>
