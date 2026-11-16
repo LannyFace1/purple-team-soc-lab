@@ -51,7 +51,7 @@ Eine Übersicht über alles, was beim Aufbau nicht auf Anhieb funktioniert hat. 
 |---|---|---|---|
 | Active Response mit `host-deny` | `host-deny` sperrt IPs über `/etc/hosts.deny` (liest das aktuelle SSH nicht mehr), löscht aber keine Dateien | Eigenes Skript `remove-threat.sh`, Auslöser `rules_id 87105` statt `level` | [07](07-fim-virustotal-active-response.md) |
 | Active Response löst nicht aus | Skript lag auf der Wazuh-VM statt auf dem Agent | Skript auf linux-opfer angelegt | [07](07-fim-virustotal-active-response.md) |
-| Agent-Log: „Active response command not present: remove-threat.sh“ | Agent prüft beim Start, welche Skripte vorhanden sind, das Skript kam erst danach | `systemctl restart wazuh-agent` | [07](07-fim-virustotal-active-response.md) |
+| Agent-Log: „Active response command not present: remove-threat.sh“ | Agent prüft beim Start, welche Skripte vorhanden sind, das Skript kam aber erst danach | `systemctl restart wazuh-agent` | [07](07-fim-virustotal-active-response.md) |
 | Eigene Frequenz-Regel für SSH-Bruteforce feuert nicht | Wazuhs eingebaute Regel 5763 zählt die Fehlversuche schon selbst | Eigene Regel 100400 direkt an 5763 gehängt | [08](08-szenario-1-ssh-bruteforce.md#automatische-reaktion-firewall-drop) |
 
 ---
