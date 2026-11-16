@@ -1,4 +1,4 @@
-# Schutz vor Geheimnissen: die komplette ossec.conf enthält den VirusTotal-API-Key.
+# Schutz vor Geheimnissen: die komplette ossec.conf kann den VirusTotal-API-Key enthalten.
 # Ins Repo kommen nur die Ausschnitte in wazuh/ossec-snippets/ mit Platzhalter.
 ossec.conf
 *.key
