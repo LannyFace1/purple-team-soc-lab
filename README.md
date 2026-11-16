@@ -126,14 +126,16 @@ purple-team-soc-lab/
 
 ## Was ich gelernt habe
 
-- **Alert Fatigue vermeiden.** Einzelne Firewall-Blocks sind kein Anzeichen eines angriffes. erst ab mehreren nach einander oder gleichzeitig ausgelösten blocks von der selben IP in kurzer zeit kann man sicher sein das es aufmerksamkeit gebracht. 
+- **Alert Fatigue vermeiden.** Einzelne Firewall-Blocks sind kein Anzeichen eines Angriffes. erst ab mehreren nach einander oder gleichzeitig ausgelösten Blocks von der selben IP in kurzer zeit kann man davon ausgehen das es ein angriff sein kann. 
 - **Eingebaute Regeln Prüfen.** Nicht immer ist es nötig eigene regeln zu bauen da die meisten SIE tools schon mit den wichtigsten regeln komen und man muss nur gucken wie man diese verwenden kann.
 - **Erkennung ist nicht gleich Abwehr.** Nur weil ich ein Event sehe und aufzeichne heizt das nicht das ich aktiv was dagegen tue. Erkennen ist der erste schritt die richtige Abwehr dagegen zu finden und zu implementieren ist der nächste. Zum Beispiel mit Active Response
+- **Logs ankommen heißt nicht, dass sie erkannt werden.** Die pfSense-Logs kamen laut `tcpdump` an, trotzdem gab es keinen einzigen Alarm. Mit `wazuh-logtest` habe ich herausgefunden, dass keiner der mitgelieferten Decoder zum Format passt und habe mit Hilfe von KI einen eigenen geschrieben.
+- **Blue Team und Red Team.** Aufgefallen ist mir bei dem Projekt, dass Blue Team und Red Team viele Parallelen haben. Beide Teams wollen Schwachstellen finden, zwar aus verschiedenen Gründen, aber mit demselben Ziel. Das Blue Team, um die Lücke zu schließen. Das Red Team, um zu zeigen, dass man sie ausnutzen kann.
+- **Nicht jeder Alert ist ein Angriff.** Außerdem hat mir das Projekt gezeigt, dass nicht jeder Alert der reinkommt auch schlimm sein muss. Viele Alerts sind Fehlalarme (False Positives). Dazu kommen viele Meldungen die zwar stimmen aber von legitimen Quellen kommen, zum Beispiel von Windows selbst oder von mir als Admin. Deshalb gehört zu einem SIEM nicht nur das Erkennen, sondern auch das Aussortieren: Alerts prüfen, unwichtige Regeln stumm schalten und wichtige hochstufen.
 
-<!--
-- **Logs ankommen heißt nicht, dass sie erkannt werden.** Die pfSense-Logs kamen laut `tcpdump` an, trotzdem gab es keinen einzigen Alarm. Mit `wazuh-logtest` habe ich gefunden, dass keiner der mitgelieferten Decoder zum Format passt, und einen eigenen geschrieben.
-- **Kontext ist wichtig.** Suricata hat das Angreifer-Netz zuerst als eigenes Netz betrachtet, deshalb haben viele Regeln nicht gegriffen. Erst mit sauber gesetztem HOME_NET kamen die Alarme.
--->
+### Fazit
+
+Abschließend hat mir das Projekt viel Spaß gemacht, da ich praktisch viel lernen konnte und Probleme, die aufgetreten sind, selbst lösen konnte. Ich bin zwar noch kein Experte, trotzdem fühle ich mich jetzt sicherer im Umgang mit SIEMs, Firewalls und IDS.
 ---
 
 ## Ausblick
