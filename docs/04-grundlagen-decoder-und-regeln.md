@@ -17,10 +17,10 @@ Eigene Regeln müssen zwischen 100000 und 120000 liegen. Die Beispielregel 10000
 
 ### Dateien
 
-| Datei                                       | Inhalt                                                                                                                             |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `/var/ossec/etc/decoders/local_decoder.xml` **[local_decoder.xml](../wazuh/local_decoder.xml)** | eigene Decoder                                                                 |
-| `/var/ossec/etc/rules/local_rules.xml` **[local_rules.xml](../wazuh/local_rules.xml)**          | eigene Regeln (eigener `<group>`-Block pro Thema, nach dem letzten `</group>`) |
+| Datei                                       | Inhalt                                                                                                                               |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `/var/ossec/etc/decoders/local_decoder.xml` (**[local_decoder.xml](../wazuh/local_decoder.xml)**) | eigene Decoder                                                                 |
+| `/var/ossec/etc/rules/local_rules.xml` (**[local_rules.xml](../wazuh/local_rules.xml)**)          | eigene Regeln (eigener `<group>`-Block pro Thema, nach dem letzten `</group>`) |
 
 
 
