@@ -35,7 +35,16 @@ sudo systemctl restart wazuh-manager
 sudo systemctl status wazuh-manager
 ```
 
+### pfSense schickt die Logs
+**Status → System Logs → Settings**:
 
+- **Log Message Format:** **syslog (RFC 5424)** (warum, siehe Fehlersuche unten)
+- Ganz unten **Enable Remote Logging** anhaken
+- **Source Address:** MANAGEMENT
+- **IP Protocol:** IPv4
+- **Remote log servers:** `10.10.10.10:514`
+- **Remote Syslog Contents:** Firewall Events (für Suricata später zusätzlich System Events)
+- **Save**
 
 
 
