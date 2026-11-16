@@ -1,18 +1,10 @@
 # 06 Suricata (IDS)
 
-Suricata auf der pfSense, Alarme an Wazuh und Bewertung nach Severity.
-
 ### Suricata (IDS)
 
-**Warum Suricata:** Die Firewall sieht nur, wer mit wem auf welchem Port spricht. Suricata ist ein **IDS** (Intrusion Detection System) und schaut **in den Inhalt** der Pakete. Es vergleicht den Verkehr mit Zehntausenden Signaturen bekannter Angriffe. Das ist bei mir besonders wichtig, weil **Angreifer → Opfer** in der Firewall komplett erlaubt ist. Diese Angriffe würde die Firewall nie als Problem melden.
+**Warum Suricata:** Die Firewall sieht nur, wer mit wem auf welchem Port spricht. Suricata ist ein **IDS** (Intrusion Detection System) und schaut **in den Inhalt** der Pakete. Es vergleicht den Verkehr mit Zehntausenden Signaturen bekannter Angriffe. Das ist im projekt besonders wichtig, weil **Angreifer → Opfer** in der Firewall komplett erlaubt ist. Diese Angriffe würde die Firewall nie als Problem melden.
 
 Ich betreibe Suricata im **IDS-Modus** (nur erkennen, nicht blocken). Blocken würde meine Angriffsszenarien verhindern.
-
-### Vorbereitung
-
-- Snapshot der pfSense-VM (114) in Proxmox
-- RAM der pfSense: **4 GB** (Suricata braucht mit vielen Regeln 1 bis 2 GB, darunter kann es beim Laden abstürzen)
-- mindestens **2 CPU-Kerne**, weil Suricata jedes Paket gegen die Regeln prüft
 
 ### Paket installieren
 
@@ -45,9 +37,9 @@ Dann Reiter **Updates** → **Update**. Alle Regelwerke wurden geladen:
 
 ### Hardware-Offloading abschalten
 
-Suricata hat gewarnt, dass Hardware Checksum Offloading, TCP Segmentation Offloading und Large Receive Offloading aktiv sind.
+Suricata hat eine Warnung angezeigt, dass Hardware Checksum Offloading, TCP Segmentation Offloading und Large Receive Offloading aktiv sind.
 
-**Grund:** Beim Offloading übernimmt die Netzwerkkarte Aufgaben wie Prüfsummen und das Zerlegen großer Pakete. Suricata greift die Pakete aber vorher ab und sieht dann falsche Prüfsummen oder unnatürlich große Pakete. Das führt zu verpassten Angriffen oder Fehlalarmen, bei virtuellen Netzwerkkarten (virtio) besonders oft.
+**Grund:** Beim Offloading übernimmt die Netzwerkkarte Aufgaben wie Prüfsummen und das Zerlegen großer Pakete. Suricata greift die Pakete aber vorher ab und sieht dann falsche Prüfsummen oder unnatürlich große Pakete. Das führt zu verpassten Angriffen oder Fehlalarmen, bei virtuellen Netzwerkkarten besonders oft.
 
 **System → Advanced → Networking**, drei Haken setzen:
 - Disable hardware checksum offload
@@ -58,7 +50,7 @@ Save, danach pfSense **neu starten**.
 
 ### Interface ANGREIFER einrichten
 
-Warum ANGREIFER: Jeder Angriff von Kali, egal ob auf die Opfer oder aufs Management-Netz, läuft durch dieses Interface.
+Warum ANGREIFER: Jeder Angriff von Kali, egal ob auf die Opfer oder aufs Management-Netz, läuft durch dieses Interface. Außerdem kann man dadurch schneller erkennen aus welchem Netzt was kommt. 
 
 **Services → Suricata → Interfaces → Add**
 - Enable, Interface **ANGREIFER**, Description `ANGREIFER`
@@ -74,7 +66,7 @@ Status grün, **Blocking Mode: DISABLED**.
 
 ### HOME_NET festlegen
 
-Die meisten Suricata-Regeln haben eine **Richtung**, z. B. „Alarm, wenn jemand von außen (EXTERNAL_NET) etwas im eigenen Netz (HOME_NET) scannt“. Die pfSense setzt standardmäßig **alle** eigenen Netze als HOME_NET, also auch das Angreifer-Netz. Für Suricata ist Kali damit „intern“, und viele Angriffsregeln hätten nicht gegriffen. Der erste Test blieb deshalb leer.
+Die meisten Suricata-Regeln haben eine **Richtung**, z.B. „Alarm, wenn jemand von außen (EXTERNAL_NET) etwas im eigenen Netz (HOME_NET) scannt“. Die pfSense setzt standardmäßig **alle** eigenen Netze als HOME_NET, also auch das Angreifer-Netz. Für Suricata ist Kali damit „intern“, und viele Angriffsregeln hätten nicht gegriffen. Der erste Test den ich durchgeführt habe blieb deshalb leer.
 
 Für das Lab gilt deshalb:
 - **HOME_NET** = Management (10.10.10.0/24) und Opfer (10.10.20.0/24), also das, was ich schützen will
@@ -104,8 +96,6 @@ sudo nmap -sS -sV -O 10.10.20.100
 - **ET SCAN Suspicious inbound to PostgreSQL port 5432**
 
 Das Wort **„inbound“** zeigt, warum HOME_NET so wichtig war: Diese Regeln greifen nur bei Verkehr von EXTERNAL_NET nach HOME_NET.
-
-**Hinweis zum Start:** Suricata braucht beim Start knapp eine Minute, um alle Regeln zu laden. Erst wenn in **Logs View → suricata.log** die Zeile `Engine started` steht, wird Verkehr geprüft. Dort steht auch, wie viele Regeln geladen wurden (bei mir 64.716 erfolgreich, 113 fehlgeschlagen).
 
 ### Suricata-Alerts an Wazuh
 
