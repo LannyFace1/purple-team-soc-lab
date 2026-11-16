@@ -1,5 +1,4 @@
 <!--
-  Purple Team SOC Lab: Active Response auf dem Wazuh-Server
   Datei: /var/ossec/etc/ossec.conf (innerhalb von <ossec_config>)
   Danach: systemctl restart wazuh-manager
 
