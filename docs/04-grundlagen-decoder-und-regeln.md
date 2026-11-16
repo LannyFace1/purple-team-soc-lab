@@ -33,6 +33,7 @@ Nach jeder Änderung erst die Syntax prüfen, dann neu starten:
 /var/ossec/bin/wazuh-analysisd -t
 systemctl restart wazuh-manager
 ```
+
 > [!NOTE]
 > Wazuh liest Regeln nur beim Start ein. Bei einem Fehler startet der Manager nicht, deshalb immer zuerst `-t`.
 
@@ -44,6 +45,7 @@ Damit ich echte Zeilen testen kann, aktiviere ich das mitschreiben aller eingehe
 ```
 
 Danach den Manager neu starten. Die Rohdaten landen in `/var/ossec/logs/archives/archives.log`. Jetzt kann ich eine Zeile durch einen logtest schicken:
+
 > [!NOTE]
 > Den Code habe ich mir von KI geben lassen
 
@@ -52,6 +54,7 @@ grep SUCHBEGRIFF /var/ossec/logs/archives/archives.log | tail -n 1 | sed 's/^[^>
 ```
 
 Der `sed`-Teil schneidet den Wazuh-Vorspann ab, sodass nur die Originalzeile übrig bleibt. logtest zeigt dann in Phase 1 die Vorverarbeitung, in Phase 2 den Decoder mit allen Feldern und in Phase 3 die passende Regel.
+
 
 > [!NOTE]
 > **Wichtig:** Danach `logall` wieder auf `no` stellen, sonst schreibt Wazuh jedes Event dauerhaft mit und die Platte läuft voll.
