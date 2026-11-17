@@ -11,11 +11,11 @@
 
 ## Architektur
 
-<!-- Excalidraw-Diagramm als PNG nach diagrams/ exportieren und hier einbinden:
-![Netzwerkarchitektur](diagrams/netzwerkarchitektur.png)
--->
+
+![Netzwerkarchitektur](diagrams/soc-lab-architektur.png)
 
 ```
+<!--
                          Heimnetz
                             │
                      ┌──────┴──────┐
@@ -28,6 +28,7 @@
    │  Wazuh   │    │ win11-opfer  │     │   Kali   │
    │ (SIEM)   │    │ linux-opfer  │     └──────────┘
    └──────────┘    └──────────────┘
+-->
 ```
 
 Die drei Lab-Netze sind in Proxmox Bridges ohne Verbindung nach außen unterteilt. Der gesamte Verkehr läuft über die pfSense.
