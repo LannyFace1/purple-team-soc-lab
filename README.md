@@ -1,4 +1,4 @@
-l# Purple Team SOC Lab
+# Purple Team SOC Lab
 
 **Wazuh, pfSense und Suricata auf Proxmox, mit Decodern, eigenen Regeln, Angriffen von Kali und automatischer Reaktion.**
 
