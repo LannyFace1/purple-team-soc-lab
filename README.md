@@ -1,4 +1,4 @@
-# Purple Team SOC Lab
+l# Purple Team SOC Lab
 
 **Wazuh, pfSense und Suricata auf Proxmox, mit Decodern, eigenen Regeln, Angriffen von Kali und automatischer Reaktion.**
 
@@ -127,7 +127,7 @@ purple-team-soc-lab/
 ## Was ich gelernt habe
 
 - **Alert Fatigue vermeiden.** Einzelne Firewall-Blocks sind kein Anzeichen eines Angriffes. erst ab mehreren nach einander oder gleichzeitig ausgelösten Blocks von der selben IP in kurzer zeit kann man davon ausgehen das es ein angriff sein kann. 
-- **Eingebaute Regeln Prüfen.** Nicht immer ist es nötig eigene regeln zu bauen da die meisten SIE tools schon mit den wichtigsten regeln komen und man muss nur gucken wie man diese verwenden kann.
+- **Eingebaute Regeln Prüfen.** Nicht immer ist es nötig eigene regeln zu bauen da die meisten SIEM tools schon mit den wichtigsten regeln komen und man muss nur gucken wie man diese verwenden kann.
 - **Erkennung ist nicht gleich Abwehr.** Nur weil ich ein Event sehe und aufzeichne heizt das nicht das ich aktiv was dagegen tue. Erkennen ist der erste schritt die richtige Abwehr dagegen zu finden und zu implementieren ist der nächste. Zum Beispiel mit Active Response
 - **Logs ankommen heißt nicht, dass sie erkannt werden.** Die pfSense-Logs kamen laut `tcpdump` an, trotzdem gab es keinen einzigen Alarm. Mit `wazuh-logtest` habe ich herausgefunden, dass keiner der mitgelieferten Decoder zum Format passt und habe mit Hilfe von KI einen eigenen geschrieben.
 - **Blue Team und Red Team.** Aufgefallen ist mir bei dem Projekt, dass Blue Team und Red Team viele Parallelen haben. Beide Teams wollen Schwachstellen finden, zwar aus verschiedenen Gründen, aber mit demselben Ziel. Das Blue Team, um die Lücke zu schließen. Das Red Team, um zu zeigen, dass man sie ausnutzen kann.
