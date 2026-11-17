@@ -2,7 +2,7 @@
 
 **Warum ich das Projekt gemacht habe:** Das ist mein erstes Projekt dieser Art. Das Ziel des Projektes war es mich mit SIEMs, Firewalls und IDS vertraut zu machen und im praktischen rahmen den kompletten Weg selbst zu gehen, vom Netzwerkdesign über das Sammeln von logs bis zur Erstellung von Regeln und Gegenmaßnahmen. Vieles davon habe ich mir während des Projektes selber beigebracht. Fehler die mir unterlaufen sind habe ich mit dokumentiert. 
 
-**Was ist im Projekt.** Ein selbst gebautes Security Operations Center (SOC) im Homelab. Ich greife meine eigenen Opfer-VMs von einem Kali-Rechner aus an, erkenne die Angriffe im SIEM und lasse Wazuh automatisch reagieren.
+**Was ist im Projekt:** Ein selbst gebautes Security Operations Center (SOC) im Homelab. Ich greife meine eigenen Opfer-VMs von einem Kali-Rechner aus an, erkenne die Angriffe im SIEM und lasse Wazuh automatisch reagieren.
 
 > [!NOTE]
 > Die ausführliche Anleitung liegt im Ordner [`docs/`](docs/README.md).
